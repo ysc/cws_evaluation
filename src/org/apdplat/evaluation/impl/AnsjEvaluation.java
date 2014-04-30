@@ -21,7 +21,6 @@
 package org.apdplat.evaluation.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.BaseAnalysis;
@@ -106,15 +105,6 @@ public class AnsjEvaluation extends Evaluation{
         return result;
     }
     public static void main(String[] args) throws Exception{
-        List<EvaluationResult> list = new AnsjEvaluation().run();
-        //输出评估结果
-        Collections.sort(list);
-        System.out.println("******************************************************************************************************************");
-        int i=1;
-        for(EvaluationResult r : list){
-            System.out.println((i++)+"：");
-            System.out.println(r+"\n");
-        }
-        System.out.println("******************************************************************************************************************");
+        Evaluation.generateReport(new AnsjEvaluation().run());
     }
 }

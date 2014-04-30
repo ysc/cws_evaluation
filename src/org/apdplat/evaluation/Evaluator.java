@@ -24,7 +24,6 @@ import org.apdplat.evaluation.impl.MMSeg4jEvaluation;
 import org.apdplat.evaluation.impl.WordEvaluation;
 import org.apdplat.evaluation.impl.IKAnalyzerEvaluation;
 import org.apdplat.evaluation.impl.AnsjEvaluation;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -37,15 +36,8 @@ public class Evaluator {
         list.addAll(new AnsjEvaluation().run());
         list.addAll(new MMSeg4jEvaluation().run());
         list.addAll(new IKAnalyzerEvaluation().run());
-        //输出评估结果
-        Collections.sort(list);
-        System.out.println("******************************************************************************************************************");
-        int i=1;
-        for(EvaluationResult r : list){
-            System.out.println((i++)+"：");
-            System.out.println(r+"\n");
-        }
-        System.out.println("******************************************************************************************************************");
+        
+        Evaluation.generateReport(list);
     }
 
 }

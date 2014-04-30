@@ -30,7 +30,6 @@ import com.chenlb.mmseg4j.Word;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import org.apdplat.evaluation.Evaluation;
 import org.apdplat.evaluation.EvaluationResult;
@@ -84,15 +83,6 @@ public class MMSeg4jEvaluation extends Evaluation{
         return result.toString();
     }
     public static void main(String[] args) throws Exception{
-        List<EvaluationResult> list = new MMSeg4jEvaluation().run();
-        //输出评估结果
-        Collections.sort(list);
-        System.out.println("******************************************************************************************************************");
-        int i=1;
-        for(EvaluationResult r : list){
-            System.out.println((i++)+"：");
-            System.out.println(r+"\n");
-        }
-        System.out.println("******************************************************************************************************************");
+        Evaluation.generateReport(new MMSeg4jEvaluation().run());
     }
 }
