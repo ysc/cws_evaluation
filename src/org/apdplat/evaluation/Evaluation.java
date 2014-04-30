@@ -90,6 +90,10 @@ public abstract class Evaluation {
      * @throws Exception 
      */
     protected float segFile(final String input, final String output, final Segmenter segmenter) throws Exception{
+        //如果分词结果文件存放目录不存在，则创建
+        if(!Files.exists(Paths.get(output).getParent())){
+            Files.createDirectory(Paths.get(output).getParent());
+        }
         float rate = 0;
         try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(input),"utf-8"));
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(output),"utf-8"))){
