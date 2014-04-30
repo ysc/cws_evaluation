@@ -40,7 +40,9 @@ public class IKAnalyzerEvaluation extends Evaluation{
     public List<EvaluationResult> run() throws Exception {
         List<EvaluationResult> list = new ArrayList<>();
         
+        System.out.println("开始评估 IKAnalyzer 智能切分");
         list.add(run(true));
+        System.out.println("开始评估 IKAnalyzer 细粒度切分");
         list.add(run(false));
         
         return list;

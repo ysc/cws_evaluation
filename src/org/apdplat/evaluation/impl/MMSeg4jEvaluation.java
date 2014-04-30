@@ -46,8 +46,11 @@ public class MMSeg4jEvaluation extends Evaluation{
         List<EvaluationResult> list = new ArrayList<>();
         Dictionary dic = Dictionary.getInstance();
         
+        System.out.println("开始评估 MMSeg4j ComplexSeg");
         list.add(run(new ComplexSeg(dic)));
+        System.out.println("开始评估 MMSeg4j SimpleSeg");
         list.add(run(new SimpleSeg(dic)));
+        System.out.println("开始评估 MMSeg4j MaxWordSeg");
         list.add(run(new MaxWordSeg(dic)));
         
         return list;

@@ -39,6 +39,7 @@ public class WordEvaluation extends Evaluation{
     public List<EvaluationResult> run() throws Exception {
         List<EvaluationResult> list = new ArrayList<>();
         for(final SegmentationAlgorithm segmentationAlgorithm : SegmentationAlgorithm.values()){
+            System.out.println("开始评估 word分词 "+segmentationAlgorithm.getDes());
             list.add(run(segmentationAlgorithm));
         }
         return list;

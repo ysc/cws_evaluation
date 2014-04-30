@@ -41,9 +41,13 @@ public class AnsjEvaluation extends Evaluation{
     public List<EvaluationResult> run() throws Exception {
         List<EvaluationResult> list = new ArrayList<>();
         
+        System.out.println("开始评估 Ansj BaseAnalysis 基本分词");
         list.add(run("BaseAnalysis"));        
+        System.out.println("开始评估 Ansj ToAnalysis 精准分词");
         list.add(run("ToAnalysis"));
+        System.out.println("开始评估 Ansj NlpAnalysis NLP分词");
         list.add(run("NlpAnalysis"));
+        System.out.println("开始评估 Ansj IndexAnalysis 面向索引的分词");
         list.add(run("IndexAnalysis"));
         
         return list;
