@@ -24,10 +24,14 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -38,6 +42,26 @@ public abstract class Evaluation {
     protected final String testText = "data/test-text.txt";
     protected final String standardText = "data/standard-text.txt";
     public abstract List<EvaluationResult> run() throws Exception;
+    /**
+     * 生成评估报告
+     * @param list
+     * @throws IOException 
+     */
+    public static void generateReport(List<EvaluationResult> list) throws IOException{
+        Collections.sort(list);
+        List<String> result = new ArrayList<>();
+        result.add("******************************************************************************************************************");
+        int i=1;
+        for(EvaluationResult item : list){
+            result.add((i++)+"：");
+            result.add(item.toString());
+        }
+        result.add("******************************************************************************************************************");
+        for(String item : result){
+            System.out.println(item);
+        }
+        Files.write(Paths.get("分词效果评估报告.txt"), result, Charset.forName("utf-8"));
+    }
     /**
      * 分词效果评估
      * @param resultText 实际分词结果文件路径
