@@ -1,4 +1,4 @@
-# 中文分词器分词效果评估程序
+## 中文分词器分词效果评估程序
 
 
 
@@ -10,7 +10,7 @@
    
    运行org.apdplat.evaluation.Evaluator类可获得评估结果
    
-   [可运行程序下载](http://pan.baidu.com/s/1hq42gV6)
+   [可运行程序下载](http://pan.baidu.com/s/1jGwq682)
 
    [评估结果](http://yangshangchuan.iteye.com/blog/2059040)
    
