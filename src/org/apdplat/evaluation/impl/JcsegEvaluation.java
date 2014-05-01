@@ -42,19 +42,18 @@ public class JcsegEvaluation extends Evaluation{
     public List<EvaluationResult> run() throws Exception {
         List<EvaluationResult> list = new ArrayList<>();
         
-        JcsegTaskConfig config = new JcsegTaskConfig();
-        config.setLoadCJKSyn(false);
-        config.setLoadCJKPinyin(false);
-        ADictionary dic = DictionaryFactory.createDefaultDictionary(config);
-        
         System.out.println("开始评估 Jcseg 复杂模式");
-        list.add(run(JcsegTaskConfig.COMPLEX_MODE, config, dic));        
+        list.add(run(JcsegTaskConfig.COMPLEX_MODE));        
         System.out.println("开始评估 Jcseg 简易模式");
-        list.add(run(JcsegTaskConfig.SIMPLE_MODE, config, dic));
+        list.add(run(JcsegTaskConfig.SIMPLE_MODE));
         
         return list;
     }
-    private EvaluationResult run(final int segMode, final JcsegTaskConfig config, final ADictionary dic) throws Exception{
+    private EvaluationResult run(final int segMode) throws Exception{        
+        final JcsegTaskConfig config = new JcsegTaskConfig();
+        config.setLoadCJKSyn(false);
+        config.setLoadCJKPinyin(false);
+        final ADictionary dic = DictionaryFactory.createDefaultDictionary(config);
         // 对文本进行分词
         String type = JcsegTaskConfig.COMPLEX_MODE==segMode?"Jcseg 复杂模式":"Jcseg 简易模式";
         String resultText = "temp/result-text-"+type+".txt";
