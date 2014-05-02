@@ -48,6 +48,15 @@ public abstract class Evaluation {
      * @throws IOException 
      */
     public static void generateReport(List<EvaluationResult> list) throws IOException{
+        generateReport(list, "分词效果评估报告.txt");
+    }
+    /**
+     * 生成评估报告
+     * @param list
+     * @param reportName 保存报告的文件名称
+     * @throws IOException 
+     */
+    public static void generateReport(List<EvaluationResult> list, String reportName) throws IOException{
         Collections.sort(list);
         List<String> result = new ArrayList<>();
         result.add("******************************************************************************************************************");
@@ -60,7 +69,7 @@ public abstract class Evaluation {
         for(String item : result){
             System.out.println(item);
         }
-        Files.write(Paths.get("分词效果评估报告.txt"), result, Charset.forName("utf-8"));
+        Files.write(Paths.get(reportName), result, Charset.forName("utf-8"));
     }
     /**
      * 分词效果评估
