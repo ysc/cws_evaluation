@@ -24,7 +24,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -42,6 +44,23 @@ public class Evaluator {
         }else{
             classes.addAll(processDir());
         }
+        //可通过命令行参数指定不评估的分词器
+        Iterator<Class> iter = classes.iterator();
+        for(String exclude : args){
+            while(iter.hasNext()){
+                Class clazz = iter.next();
+                if(clazz.getSimpleName().startsWith(exclude)){
+                    iter.remove();
+                    System.out.println("不评估："+clazz.getSimpleName());
+                }
+            }
+        }
+        System.out.println("需要评估的分词器：");
+        int i=1;
+        for(Class clazz : classes){
+            System.out.println((i++)+"："+clazz.getSimpleName());
+        }
+        Collections.reverse(classes);
         List<EvaluationResult> list = new ArrayList<>();
         for(Class clazz : classes){
             Evaluation eval = (Evaluation)clazz.newInstance();
