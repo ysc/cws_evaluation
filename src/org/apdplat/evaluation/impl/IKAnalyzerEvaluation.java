@@ -44,6 +44,8 @@ public class IKAnalyzerEvaluation extends Evaluation{
         System.out.println("开始评估 IKAnalyzer 细粒度切分");
         list.add(run(false));
         
+        Evaluation.generateReport(list, "IKAnalyzer分词器分词效果评估报告.txt");
+        
         return list;
     }
     private EvaluationResult run(final boolean useSmart) throws Exception{
@@ -79,6 +81,6 @@ public class IKAnalyzerEvaluation extends Evaluation{
         return result.toString();
     }
     public static void main(String[] args) throws Exception{
-        Evaluation.generateReport(new IKAnalyzerEvaluation().run());
+        Evaluation.generateReport(new IKAnalyzerEvaluation().run(), "IKAnalyzer分词器分词效果评估报告.txt");
     }
 }

@@ -43,6 +43,8 @@ public class JiebaEvaluation extends Evaluation{
         System.out.println("开始评估 Jieba "+SegMode.SEARCH);
         list.add(run(SegMode.SEARCH));
         
+        Evaluation.generateReport(list, "Jieba分词器分词效果评估报告.txt");
+        
         return list;
     }
     private EvaluationResult run(final SegMode segMode) throws Exception{
@@ -66,6 +68,6 @@ public class JiebaEvaluation extends Evaluation{
         return result;
     }
     public static void main(String[] args) throws Exception{
-        Evaluation.generateReport(new JiebaEvaluation().run());
+        Evaluation.generateReport(new JiebaEvaluation().run(), "Jieba分词器分词效果评估报告.txt");
     }
 }

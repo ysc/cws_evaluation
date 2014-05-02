@@ -52,6 +52,8 @@ public class MMSeg4jEvaluation extends Evaluation{
         System.out.println("开始评估 MMSeg4j MaxWordSeg");
         list.add(run(new MaxWordSeg(dic)));
         
+        Evaluation.generateReport(list, "MMSeg4j分词器分词效果评估报告.txt");
+        
         return list;
     }
     private EvaluationResult run(final Seg seg) throws Exception{
@@ -83,6 +85,6 @@ public class MMSeg4jEvaluation extends Evaluation{
         return result.toString();
     }
     public static void main(String[] args) throws Exception{
-        Evaluation.generateReport(new MMSeg4jEvaluation().run());
+        Evaluation.generateReport(new MMSeg4jEvaluation().run(), "MMSeg4j分词器分词效果评估报告.txt");
     }
 }

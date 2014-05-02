@@ -41,6 +41,7 @@ public class WordEvaluation extends Evaluation{
             System.out.println("开始评估 word分词 "+segmentationAlgorithm.getDes());
             list.add(run(segmentationAlgorithm));
         }
+        Evaluation.generateReport(list, "word分词器分词效果评估报告.txt");
         return list;
     }
     private EvaluationResult run(final SegmentationAlgorithm segmentationAlgorithm) throws Exception{
@@ -63,6 +64,6 @@ public class WordEvaluation extends Evaluation{
         return evaluationResult;
     }
     public static void main(String[] args) throws Exception{
-        Evaluation.generateReport(new WordEvaluation().run());
+        Evaluation.generateReport(new WordEvaluation().run(), "word分词器分词效果评估报告.txt");
     }
 }

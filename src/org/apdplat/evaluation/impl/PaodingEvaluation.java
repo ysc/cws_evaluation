@@ -44,6 +44,8 @@ public class PaodingEvaluation extends Evaluation{
         System.out.println("开始评估 Paoding MAX_WORD_LENGTH_MODE");
         list.add(run(PaodingAnalyzer.MAX_WORD_LENGTH_MODE));
         
+        Evaluation.generateReport(list, "Paoding分词器分词效果评估报告.txt");
+        
         return list;
     }
     private EvaluationResult run(final int mode) throws Exception{
@@ -76,6 +78,6 @@ public class PaodingEvaluation extends Evaluation{
         return result;
     }
     public static void main(String[] args) throws Exception{
-        Evaluation.generateReport(new PaodingEvaluation().run());
+        Evaluation.generateReport(new PaodingEvaluation().run(), "Paoding分词器分词效果评估报告.txt");
     }
 }

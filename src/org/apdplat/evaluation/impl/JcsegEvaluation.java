@@ -47,6 +47,8 @@ public class JcsegEvaluation extends Evaluation{
         System.out.println("开始评估 Jcseg 简易模式");
         list.add(run(JcsegTaskConfig.SIMPLE_MODE));
         
+        Evaluation.generateReport(list, "Jcseg分词器分词效果评估报告.txt");
+        
         return list;
     }
     private EvaluationResult run(final int segMode) throws Exception{        
@@ -83,6 +85,6 @@ public class JcsegEvaluation extends Evaluation{
         return result.toString();
     }
     public static void main(String[] args) throws Exception{
-        Evaluation.generateReport(new JcsegEvaluation().run());
+        Evaluation.generateReport(new JcsegEvaluation().run(), "Jcseg分词器分词效果评估报告.txt");
     }
 }

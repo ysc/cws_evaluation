@@ -42,6 +42,8 @@ public class FudanNLPEvaluation extends Evaluation{
         System.out.println("开始评估 FudanNLP");
         list.add(run(tag));
         
+        Evaluation.generateReport(list, "FudanNLP分词器分词效果评估报告.txt");
+        
         return list;
     }
     private EvaluationResult run(final CWSTagger tagger) throws Exception{
@@ -60,6 +62,6 @@ public class FudanNLPEvaluation extends Evaluation{
         return result;
     }
     public static void main(String[] args) throws Exception{
-        Evaluation.generateReport(new FudanNLPEvaluation().run());
+        Evaluation.generateReport(new FudanNLPEvaluation().run(), "FudanNLP分词器分词效果评估报告.txt");
     }
 }

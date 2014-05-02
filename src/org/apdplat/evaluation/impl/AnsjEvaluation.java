@@ -49,6 +49,8 @@ public class AnsjEvaluation extends Evaluation{
         System.out.println("开始评估 Ansj IndexAnalysis 面向索引的分词");
         list.add(run("IndexAnalysis"));
         
+        Evaluation.generateReport(list, "Ansj分词器分词效果评估报告.txt");
+        
         return list;
     }
     private EvaluationResult run(final String analysis) throws Exception{
@@ -105,6 +107,6 @@ public class AnsjEvaluation extends Evaluation{
         return result;
     }
     public static void main(String[] args) throws Exception{
-        Evaluation.generateReport(new AnsjEvaluation().run());
+        Evaluation.generateReport(new AnsjEvaluation().run(), "Ansj分词器分词效果评估报告.txt");
     }
 }
