@@ -34,4 +34,6 @@
    
    [7、paoding分词器](https://code.google.com/p/paoding/)
    
-   [8、jieba分词器](https://github.com/huaban/jieba-analysis)   
+   [8、jieba分词器](https://github.com/huaban/jieba-analysis)
+   
+   [9、stanford分词器](http://nlp.stanford.edu/software/segmenter.shtml)
