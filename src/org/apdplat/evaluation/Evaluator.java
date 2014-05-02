@@ -20,11 +20,14 @@
 
 package org.apdplat.evaluation;
 
-import org.apdplat.evaluation.impl.MMSeg4jEvaluation;
-import org.apdplat.evaluation.impl.WordEvaluation;
-import org.apdplat.evaluation.impl.IKAnalyzerEvaluation;
-import org.apdplat.evaluation.impl.AnsjEvaluation;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 /**
  * 中文分词器分词效果评估程序
@@ -32,12 +35,64 @@ import java.util.List;
  */
 public class Evaluator {
     public static void main(String[] args) throws Exception{
-        List<EvaluationResult> list = new WordEvaluation().run();
-        list.addAll(new AnsjEvaluation().run());
-        list.addAll(new MMSeg4jEvaluation().run());
-        list.addAll(new IKAnalyzerEvaluation().run());
-        
+        File jarFile = new File("cws_evaluation.jar");
+        List<Class> classes = new ArrayList<>();
+        if(jarFile.exists()){
+            classes.addAll(processJar(jarFile));
+        }else{
+            classes.addAll(processDir());
+        }
+        List<EvaluationResult> list = new ArrayList<>();
+        for(Class clazz : classes){
+            Evaluation eval = (Evaluation)clazz.newInstance();
+            list.addAll(eval.run());
+        }
         Evaluation.generateReport(list);
     }
-
+    /**
+     * 获取jar中所有Evaluation接口的实现类
+     * @param jarFile
+     * @return
+     * @throws IOException
+     * @throws ClassNotFoundException 
+     */
+    private static List<Class> processJar(File jarFile) throws IOException, ClassNotFoundException {
+        List<Class> list = new ArrayList<>();
+        JarFile jarfile = new JarFile(jarFile);        
+        Enumeration files = jarfile.entries();
+        while(files.hasMoreElements()){   
+            JarEntry entry = (JarEntry)files.nextElement();  
+            if(entry.getName().startsWith("org/apdplat/evaluation/impl")
+                    && entry.getName().endsWith(".class")){
+                String cls = entry.getName().replaceAll("/", ".");
+                cls = cls.replaceAll(".class","");
+                Class clazz = Class.forName(cls);
+                if(Evaluation.class.isAssignableFrom(clazz)){
+                    list.add(clazz);  
+                }
+            }
+        }
+        return list;
+    }
+    /**
+     * 获取文件夹中所有Evaluation接口的实现类
+     * @return
+     * @throws ClassNotFoundException 
+     */
+    private static List<Class> processDir() throws ClassNotFoundException {
+        List<Class> list = new ArrayList<>();
+        URL url = Evaluator.class.getClassLoader().getResource("org/apdplat/evaluation/Evaluator.class");
+        File dir = new File(url.getFile().replace("Evaluator.class", ""), "impl");
+        for(File file : dir.listFiles()){
+            String cls = file.getPath();
+            cls = cls.substring(cls.indexOf("org\\apdplat\\evaluation\\impl\\"));
+            cls = cls.replaceAll("\\\\", "\\.");
+            cls = cls.replaceAll(".class","");
+            Class clazz = Class.forName(cls);
+            if(Evaluation.class.isAssignableFrom(clazz)){
+                list.add(clazz);
+            }
+        }
+        return list;
+    }
 }
