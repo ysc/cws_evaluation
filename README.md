@@ -27,3 +27,11 @@
    [3、mmseg4j分词器](http://code.google.com/p/mmseg4j/)
    
    [4、ik-analyzer分词器](http://code.google.com/p/ik-analyzer/)
+   
+   [5、jcseg分词器](https://code.google.com/p/jcseg/)
+   
+   [6、fudannlp分词器](https://code.google.com/p/fudannlp/)
+   
+   [7、paoding分词器](https://code.google.com/p/paoding/)
+   
+   [8、jieba分词器](https://github.com/huaban/jieba-analysis)   
