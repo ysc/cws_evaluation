@@ -71,16 +71,16 @@ public class EvaluationResult implements Comparable{
         this.segSpeed = segSpeed;
     }
     public float getLinePerfectRate(){
-        return perfectLineCount/(float)totalLineCount*100;
+        return (int)(perfectLineCount/(float)totalLineCount*10000)/(float)100;
     }
     public float getLineWrongRate(){
-        return wrongLineCount/(float)totalLineCount*100;
+        return (int)(wrongLineCount/(float)totalLineCount*10000)/(float)100;
     }
     public float getCharPerfectRate(){
-        return perfectCharCount/(float)totalCharCount*100;
+        return (int)(perfectCharCount/(float)totalCharCount*10000)/(float)100;
     }
     public float getCharWrongRate(){
-        return wrongCharCount/(float)totalCharCount*100;
+        return (int)(wrongCharCount/(float)totalCharCount*10000)/(float)100;
     }
     public int getTotalLineCount() {
         return totalLineCount;
@@ -146,5 +146,17 @@ public class EvaluationResult implements Comparable{
             return -1;
         }
         return 0;
+    }
+    public static void main(String[] args){
+        EvaluationResult r = new EvaluationResult();
+        r.setAnalyzer("test");
+        r.setSegSpeed(100);
+        r.setTotalCharCount(28374428);
+        r.setTotalLineCount(2533688);
+        r.setPerfectCharCount(7152898);
+        r.setWrongCharCount(21221530);
+        r.setPerfectLineCount(868440);
+        r.setWrongLineCount(1665248);
+        System.out.println(r);
     }
 }
