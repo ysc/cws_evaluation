@@ -37,6 +37,7 @@ import java.util.jar.JarFile;
  */
 public class Evaluator {
     public static void main(String[] args) throws Exception{
+        long start = System.currentTimeMillis();
         File jarFile = new File("cws_evaluation.jar");
         List<Class> classes = new ArrayList<>();
         if(jarFile.exists()){
@@ -55,18 +56,20 @@ public class Evaluator {
                 }
             }
         }
+        Collections.reverse(classes);
         System.out.println("需要评估的分词器：");
         int i=1;
         for(Class clazz : classes){
             System.out.println((i++)+"："+clazz.getSimpleName());
         }
-        Collections.reverse(classes);
         List<EvaluationResult> list = new ArrayList<>();
         for(Class clazz : classes){
             Evaluation eval = (Evaluation)clazz.newInstance();
             list.addAll(eval.run());
         }
         Evaluation.generateReport(list);
+        long cost = System.currentTimeMillis() - start;
+        System.out.println("评估耗时："+Evaluation.getTimeDes(cost));
     }
     /**
      * 获取jar中所有Evaluation接口的实现类
