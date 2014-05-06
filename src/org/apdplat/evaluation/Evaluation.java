@@ -59,13 +59,11 @@ public abstract class Evaluation {
     public static void generateReport(List<EvaluationResult> list, String reportName) throws IOException{
         Collections.sort(list);
         List<String> result = new ArrayList<>();
-        result.add("******************************************************************************************************************");
         int i=1;
         for(EvaluationResult item : list){
-            result.add((i++)+"：");
-            result.add(item.toString());
+            result.add("");
+            result.add((i++)+"、"+item.toString());
         }
-        result.add("******************************************************************************************************************");
         for(String item : result){
             System.out.println(item);
         }
