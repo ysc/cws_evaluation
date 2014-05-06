@@ -64,6 +64,6 @@ public class WordEvaluation extends Evaluation{
         return evaluationResult;
     }
     public static void main(String[] args) throws Exception{
-        Evaluation.generateReport(new WordEvaluation().run(), "word分词器分词效果评估报告.txt");
+        new WordEvaluation().run();
     }
 }

@@ -81,6 +81,6 @@ public class IKAnalyzerEvaluation extends Evaluation{
         return result.toString();
     }
     public static void main(String[] args) throws Exception{
-        Evaluation.generateReport(new IKAnalyzerEvaluation().run(), "IKAnalyzer分词器分词效果评估报告.txt");
+        new IKAnalyzerEvaluation().run();
     }
 }

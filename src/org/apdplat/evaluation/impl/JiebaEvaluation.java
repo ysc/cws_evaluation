@@ -68,6 +68,6 @@ public class JiebaEvaluation extends Evaluation{
         return result;
     }
     public static void main(String[] args) throws Exception{
-        Evaluation.generateReport(new JiebaEvaluation().run(), "Jieba分词器分词效果评估报告.txt");
+        new JiebaEvaluation().run();
     }
 }

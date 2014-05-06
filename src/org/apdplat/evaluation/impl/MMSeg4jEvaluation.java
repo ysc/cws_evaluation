@@ -85,6 +85,6 @@ public class MMSeg4jEvaluation extends Evaluation{
         return result.toString();
     }
     public static void main(String[] args) throws Exception{
-        Evaluation.generateReport(new MMSeg4jEvaluation().run(), "MMSeg4j分词器分词效果评估报告.txt");
+        new MMSeg4jEvaluation().run();
     }
 }

@@ -85,6 +85,6 @@ public class JcsegEvaluation extends Evaluation{
         return result.toString();
     }
     public static void main(String[] args) throws Exception{
-        Evaluation.generateReport(new JcsegEvaluation().run(), "Jcseg分词器分词效果评估报告.txt");
+        new JcsegEvaluation().run();
     }
 }

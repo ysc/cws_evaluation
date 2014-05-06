@@ -78,6 +78,6 @@ public class PaodingEvaluation extends Evaluation{
         return result;
     }
     public static void main(String[] args) throws Exception{
-        Evaluation.generateReport(new PaodingEvaluation().run(), "Paoding分词器分词效果评估报告.txt");
+        new PaodingEvaluation().run();
     }
 }

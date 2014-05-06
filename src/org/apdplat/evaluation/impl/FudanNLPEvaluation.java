@@ -62,6 +62,6 @@ public class FudanNLPEvaluation extends Evaluation{
         return result;
     }
     public static void main(String[] args) throws Exception{
-        Evaluation.generateReport(new FudanNLPEvaluation().run(), "FudanNLP分词器分词效果评估报告.txt");
+        new FudanNLPEvaluation().run();
     }
 }

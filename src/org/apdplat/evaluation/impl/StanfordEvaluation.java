@@ -132,6 +132,6 @@ public class StanfordEvaluation extends Evaluation{
         return endPointer;
     }
     public static void main(String[] args) throws Exception{
-        Evaluation.generateReport(new StanfordEvaluation().run(), "Stanford分词器分词效果评估报告.txt");
+        new StanfordEvaluation().run();
     }
 }
