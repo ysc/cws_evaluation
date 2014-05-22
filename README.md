@@ -14,10 +14,13 @@
    
    
    windows:
+   
    ./cws_evaluation.bat
 
    linux:
+   
    chmod +x cws_evaluation.sh
+   
    ./cws_evaluation.sh
 
    最终评估结果文件位于当前目录下：分词效果评估报告.txt
