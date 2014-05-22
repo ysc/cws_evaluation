@@ -12,6 +12,18 @@
    
    [可运行程序下载](http://pan.baidu.com/s/1jGwq682)
    
+   
+   windows:
+   ./cws_evaluation.bat
+
+   linux:
+   chmod +x cws_evaluation.sh
+   ./cws_evaluation.sh
+
+   最终评估结果文件位于当前目录下：分词效果评估报告.txt
+
+   注意：Stanford分词非常耗费内存，速度也比较慢，耐心等待
+   
 	
 	
 ### 支持的分词器有：
