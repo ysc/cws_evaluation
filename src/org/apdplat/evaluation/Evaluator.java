@@ -107,8 +107,13 @@ public class Evaluator {
         File dir = new File(url.getFile().replace("Evaluator.class", ""), "impl");
         for(File file : dir.listFiles()){
             String cls = file.getPath();
-            cls = cls.substring(cls.indexOf("org\\apdplat\\evaluation\\impl\\"));
+            int index = cls.indexOf("org\\apdplat\\evaluation\\impl\\");
+            if(index == -1){
+                index = cls.indexOf("org/apdplat/evaluation/impl/");
+            }
+            cls = cls.substring(index);
             cls = cls.replaceAll("\\\\", "\\.");
+            cls = cls.replaceAll("/", "\\.");
             cls = cls.replaceAll(".class","");
             Class clazz = Class.forName(cls);
             if(Evaluation.class.isAssignableFrom(clazz)){
