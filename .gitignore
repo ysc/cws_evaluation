@@ -1,0 +1,16 @@
+report/
+build.xml
+build/
+lib/stanford-segmenter-3.3.1/data/ctb.gz
+lib/stanford-segmenter-3.3.1/data/pku.gz
+lib/paoding-analysis-2.0.4-beta-dic/.compiled/
+manifest.mf
+nbproject/
+temp/
+.settings/
+.classpath
+.project
+.idea/
+cws_evaluation.iml
+cws_evaluation.ipr
+cws_evaluation.iws
