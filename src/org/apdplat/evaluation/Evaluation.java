@@ -29,6 +29,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,7 +68,11 @@ public abstract class Evaluation {
         for(String item : result){
             System.out.println(item);
         }
-        Files.write(Paths.get(reportName), result, Charset.forName("utf-8"));
+        Path report = Paths.get("report/"+reportName);
+        if(Files.notExists(report.getParent())){
+            report.getParent().toFile().mkdir();
+        }
+        Files.write(report, result, Charset.forName("utf-8"));
     }
     /**
      * 分词效果评估
