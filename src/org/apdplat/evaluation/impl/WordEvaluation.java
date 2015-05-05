@@ -40,8 +40,9 @@ public class WordEvaluation extends Evaluation{
         for(final SegmentationAlgorithm segmentationAlgorithm : SegmentationAlgorithm.values()){
             System.out.println("开始评估 word分词 "+segmentationAlgorithm.getDes());
             list.add(run(segmentationAlgorithm));
+            //每评估完一种算法就保存一次报告
+            Evaluation.generateReport(list, "word分词器分词效果评估报告.txt");
         }
-        Evaluation.generateReport(list, "word分词器分词效果评估报告.txt");
         return list;
     }
     private EvaluationResult run(final SegmentationAlgorithm segmentationAlgorithm) throws Exception{
