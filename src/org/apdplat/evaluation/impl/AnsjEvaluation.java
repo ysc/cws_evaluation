@@ -42,13 +42,18 @@ public class AnsjEvaluation extends Evaluation{
         
         System.out.println("开始评估 Ansj BaseAnalysis 基本分词");
         list.add(run("BaseAnalysis"));        
+        Evaluation.generateReport(list, "Ansj分词器分词效果评估报告.txt");
+        
         System.out.println("开始评估 Ansj ToAnalysis 精准分词");
         list.add(run("ToAnalysis"));
+        Evaluation.generateReport(list, "Ansj分词器分词效果评估报告.txt");
+        
         System.out.println("开始评估 Ansj NlpAnalysis NLP分词");
         list.add(run("NlpAnalysis"));
+        Evaluation.generateReport(list, "Ansj分词器分词效果评估报告.txt");
+        
         System.out.println("开始评估 Ansj IndexAnalysis 面向索引的分词");
         list.add(run("IndexAnalysis"));
-        
         Evaluation.generateReport(list, "Ansj分词器分词效果评估报告.txt");
         
         return list;
@@ -96,7 +101,9 @@ public class AnsjEvaluation extends Evaluation{
                     for(Term term : terms){
                         result.append(term.getName()).append(" ");                    
                     }                    
-                }catch(Exception e){}
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
                 return result.toString();
             }
         });
@@ -105,6 +112,36 @@ public class AnsjEvaluation extends Evaluation{
         result.setSegSpeed(rate);
         result.setAnalyzer(analyzer);
         return result;
+    }
+    @Override
+    public List<String> seg(String text) {
+        List<String> list = new ArrayList<>();
+        
+        StringBuilder result = new StringBuilder();
+        for(Term term : BaseAnalysis.parse(text)){
+            result.append(term.getName()).append(" ");                    
+        }     
+        list.add(result.toString());
+        
+        result.setLength(0);
+        for(Term term : ToAnalysis.parse(text)){
+            result.append(term.getName()).append(" ");                    
+        }     
+        list.add(result.toString());
+        
+        result.setLength(0);
+        for(Term term : NlpAnalysis.parse(text)){
+            result.append(term.getName()).append(" ");                    
+        }     
+        list.add(result.toString());
+        
+        result.setLength(0);
+        for(Term term : IndexAnalysis.parse(text)){
+            result.append(term.getName()).append(" ");                    
+        }     
+        list.add(result.toString());
+        
+        return list;
     }
     public static void main(String[] args) throws Exception{
         new AnsjEvaluation().run();
