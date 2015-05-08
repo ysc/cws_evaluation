@@ -45,12 +45,6 @@ public abstract class Evaluation {
     public abstract List<EvaluationResult> run() throws Exception;
     
     /**
-     * 获取分词器不同模式下 对文本的所有分词结果
-     * @param text 文本
-     * @return 所有的分词结果
-     */
-    public abstract List<String> seg(String text);
-    /**
      * 生成评估报告
      * @param list
      * @throws IOException 
