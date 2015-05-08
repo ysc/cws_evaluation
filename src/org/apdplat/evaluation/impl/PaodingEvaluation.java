@@ -41,9 +41,10 @@ public class PaodingEvaluation extends Evaluation{
         
         System.out.println("开始评估 Paoding MOST_WORDS_MODE");
         list.add(run(PaodingAnalyzer.MOST_WORDS_MODE));
+        Evaluation.generateReport(list, "Paoding分词器分词效果评估报告.txt");
+        
         System.out.println("开始评估 Paoding MAX_WORD_LENGTH_MODE");
         list.add(run(PaodingAnalyzer.MAX_WORD_LENGTH_MODE));
-        
         Evaluation.generateReport(list, "Paoding分词器分词效果评估报告.txt");
         
         return list;
@@ -51,24 +52,13 @@ public class PaodingEvaluation extends Evaluation{
     private EvaluationResult run(final int mode) throws Exception{
         final PaodingAnalyzer analyzer = new PaodingAnalyzer();
         analyzer.setMode(mode);
-        final Token reusableToken = new Token();
         String type = PaodingAnalyzer.MAX_WORD_LENGTH_MODE == mode ? "MAX_WORD_LENGTH_MODE" : "MOST_WORDS_MODE";
         // 对文本进行分词
         String resultText = "temp/result-text-"+type+".txt";
         float rate = segFile(testText, resultText, new Segmenter(){
             @Override
             public String seg(String text) {
-                StringBuilder result = new StringBuilder();
-                try {
-                    TokenStream stream = analyzer.tokenStream("", new StringReader(text));                
-                    Token token = null;
-                    while((token = stream.next(reusableToken)) != null){
-                        result.append(token.term()).append(" ");
-                    }
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
-                return result.toString();                
+                return PaodingEvaluation.seg(text, analyzer);               
             }
         });
         // 对分词结果进行评估
@@ -76,6 +66,33 @@ public class PaodingEvaluation extends Evaluation{
         result.setAnalyzer("Paoding "+type);
         result.setSegSpeed(rate);
         return result;
+    }
+    @Override
+    public List<String> seg(String text) {
+        List<String> list = new ArrayList<>();
+        
+        PaodingAnalyzer analyzer = new PaodingAnalyzer();
+        analyzer.setMode(PaodingAnalyzer.MOST_WORDS_MODE);
+        list.add(seg(text, analyzer));
+        
+        analyzer.setMode(PaodingAnalyzer.MAX_WORD_LENGTH_MODE);
+        list.add(seg(text, analyzer));
+        
+        return list;
+    }
+    private static String seg(String text, PaodingAnalyzer analyzer){
+        StringBuilder result = new StringBuilder();
+        try {
+            Token reusableToken = new Token();
+            TokenStream stream = analyzer.tokenStream("", new StringReader(text));                
+            Token token = null;
+            while((token = stream.next(reusableToken)) != null){
+                result.append(token.term()).append(" ");
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return result.toString();          
     }
     public static void main(String[] args) throws Exception{
         new PaodingEvaluation().run();
