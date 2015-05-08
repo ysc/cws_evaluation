@@ -24,6 +24,8 @@ import edu.stanford.nlp.ie.crf.CRFClassifier;
 import edu.stanford.nlp.ling.CoreLabel;
 import java.io.File;
 import java.io.RandomAccessFile;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -36,50 +38,45 @@ import org.apdplat.evaluation.Segmenter;
  * @author 杨尚川
  */
 public class StanfordEvaluation extends Evaluation{
+    static{
+        try{
+            String pku = "lib/stanford-segmenter-3.3.1/data/pku.gz";
+            String ctb = "lib/stanford-segmenter-3.3.1/data/ctb.gz";
+            //github单文件最大不能超过100m，所以分割文件存放，使用时再合并
+            //split(pku, 2);
+            //split(ctb, 2);
+            if(!Files.exists(Paths.get(pku))){
+                merge(pku, pku, 2);
+            }
+            if(!Files.exists(Paths.get(ctb))){
+                merge(ctb, ctb, 2);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
     @Override
     public List<EvaluationResult> run() throws Exception {
-        String pku = "lib/stanford-segmenter-3.3.1/data/pku.gz";
-        String ctb = "lib/stanford-segmenter-3.3.1/data/ctb.gz";
-        //github单文件最大不能超过100m，所以分割文件存放，使用时再合并
-        //split(pku, 2);
-        //split(ctb, 2);
-        merge(pku, pku, 2);
-        merge(ctb, ctb, 2);
         List<EvaluationResult> list = new ArrayList<>();
         
         System.out.println("开始评估 Stanford Chinese Treebank segmentation");
         list.add(run("ctb"));
+        Evaluation.generateReport(list, "Stanford分词器分词效果评估报告.txt");
+        
         System.out.println("开始评估 Stanford Beijing University segmentation");
         list.add(run("pku"));
-        
         Evaluation.generateReport(list, "Stanford分词器分词效果评估报告.txt");
         
         return list;
     }
-    private EvaluationResult run(final String lang) throws Exception{        
-        Properties props = new Properties();
-        props.setProperty("sighanCorporaDict", "lib/stanford-segmenter-3.3.1/data");
-        props.setProperty("NormalizationTable", "lib/stanford-segmenter-3.3.1/data/norm.simp.utf8");
-        props.setProperty("normTableEncoding", "UTF-8");
-        // below is needed because CTBSegDocumentIteratorFactory accesses it
-        props.setProperty("serDictionary","lib/stanford-segmenter-3.3.1/data/dict-chris6.ser.gz");
-        props.setProperty("inputEncoding", "UTF-8");
-        props.setProperty("sighanPostProcessing", "true");
-        
-        final CRFClassifier<CoreLabel> segmenter = new CRFClassifier<>(props);
-        segmenter.loadClassifierNoExceptions("lib/stanford-segmenter-3.3.1/data/"+lang+".gz", props);
-        
+    private EvaluationResult run(final String lang) throws Exception{
         // 对文本进行分词
         String type = "ctb".equals(lang) ? "Chinese Treebank segmentation" : "Beijing University segmentation";
         String resultText = "temp/result-text-"+type+".txt";
         float rate = segFile(testText, resultText, new Segmenter(){
             @Override
             public String seg(String text) {
-                StringBuilder result = new StringBuilder();
-                for(String word : segmenter.segmentString(text)){
-                    result.append(word).append(" ");
-                }
-                return result.toString();
+                return StanfordEvaluation.seg(lang, text);
             }
         });        
         // 对分词结果进行评估
@@ -130,6 +127,32 @@ public class StanfordEvaluation extends Evaluation{
             }   endPointer = in.getFilePointer();
         }
         return endPointer;
+    }
+    @Override
+    public List<String> seg(String text) {
+        List<String> list = new ArrayList<>();
+        list.add(seg("ctb", text));
+        list.add(seg("pku", text));
+        return list;
+    }
+    private static String seg(String lang, String text){
+        Properties props = new Properties();
+        props.setProperty("sighanCorporaDict", "lib/stanford-segmenter-3.3.1/data");
+        props.setProperty("NormalizationTable", "lib/stanford-segmenter-3.3.1/data/norm.simp.utf8");
+        props.setProperty("normTableEncoding", "UTF-8");
+        // below is needed because CTBSegDocumentIteratorFactory accesses it
+        props.setProperty("serDictionary","lib/stanford-segmenter-3.3.1/data/dict-chris6.ser.gz");
+        props.setProperty("inputEncoding", "UTF-8");
+        props.setProperty("sighanPostProcessing", "true");
+        
+        final CRFClassifier<CoreLabel> segmenter = new CRFClassifier<>(props);
+        segmenter.loadClassifierNoExceptions("lib/stanford-segmenter-3.3.1/data/"+lang+".gz", props);
+        
+        StringBuilder result = new StringBuilder();
+        for(String word : segmenter.segmentString(text)){
+            result.append(word).append(" ");
+        }
+        return result.toString();
     }
     public static void main(String[] args) throws Exception{
         new StanfordEvaluation().run();
