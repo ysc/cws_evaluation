@@ -39,6 +39,8 @@ import org.apdplat.evaluation.WordSegmenter;
  * @author 杨尚川
  */
 public class StanfordEvaluation extends Evaluation implements WordSegmenter{
+    private static CRFClassifier<CoreLabel> pkuCRFClassifier = null;
+    private static CRFClassifier<CoreLabel> ctbCRFClassifier = null;
     static{
         try{
             String pku = "lib/stanford-segmenter-3.3.1/data/pku.gz";
@@ -52,9 +54,25 @@ public class StanfordEvaluation extends Evaluation implements WordSegmenter{
             if(!Files.exists(Paths.get(ctb))){
                 merge(ctb, ctb, 2);
             }
+            pkuCRFClassifier = getCRFClassifier("pku");
+            ctbCRFClassifier = getCRFClassifier("ctb");
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+    private static CRFClassifier<CoreLabel> getCRFClassifier(String lang){
+        Properties props = new Properties();
+        props.setProperty("sighanCorporaDict", "lib/stanford-segmenter-3.3.1/data");
+        props.setProperty("NormalizationTable", "lib/stanford-segmenter-3.3.1/data/norm.simp.utf8");
+        props.setProperty("normTableEncoding", "UTF-8");
+        // below is needed because CTBSegDocumentIteratorFactory accesses it
+        props.setProperty("serDictionary","lib/stanford-segmenter-3.3.1/data/dict-chris6.ser.gz");
+        props.setProperty("inputEncoding", "UTF-8");
+        props.setProperty("sighanPostProcessing", "true");
+        
+        final CRFClassifier<CoreLabel> segmenter = new CRFClassifier<>(props);
+        segmenter.loadClassifierNoExceptions("lib/stanford-segmenter-3.3.1/data/"+lang+".gz", props);
+        return segmenter;
     }
     @Override
     public List<EvaluationResult> run() throws Exception {
@@ -74,10 +92,11 @@ public class StanfordEvaluation extends Evaluation implements WordSegmenter{
         // 对文本进行分词
         String type = "ctb".equals(lang) ? "Chinese Treebank segmentation" : "Beijing University segmentation";
         String resultText = "temp/result-text-"+type+".txt";
+        CRFClassifier<CoreLabel> crfClassifier = "ctb".equals(lang) ? ctbCRFClassifier : pkuCRFClassifier;
         float rate = segFile(testText, resultText, new Segmenter(){
             @Override
             public String seg(String text) {
-                return StanfordEvaluation.seg(lang, text);
+                return StanfordEvaluation.seg(crfClassifier, text);
             }
         });        
         // 对分词结果进行评估
@@ -86,7 +105,7 @@ public class StanfordEvaluation extends Evaluation implements WordSegmenter{
         result.setSegSpeed(rate);
         return result;
     }
-    public static void split(String file, int splitCount) throws Exception {
+    private static void split(String file, int splitCount) throws Exception {
         long length;
         long size;
         try (RandomAccessFile raf = new RandomAccessFile(new File(file), "r")) {
@@ -103,7 +122,7 @@ public class StanfordEvaluation extends Evaluation implements WordSegmenter{
             write(file, splitCount - 1, offset, length);
         }
     }
-    public static void merge(String file, String splitFiles, int splitCount) throws Exception {
+    private static void merge(String file, String splitFiles, int splitCount) throws Exception {
         try (RandomAccessFile raf = new RandomAccessFile(new File(file), "rw")) {
             for (int i = 0; i < splitCount; i++) {
                 try (RandomAccessFile reader = new RandomAccessFile(new File(splitFiles + "_" + i), "r")) {
@@ -132,25 +151,13 @@ public class StanfordEvaluation extends Evaluation implements WordSegmenter{
     @Override
     public List<String> seg(String text) {
         List<String> list = new ArrayList<>();
-        list.add(seg("ctb", text));
-        list.add(seg("pku", text));
+        list.add(seg(pkuCRFClassifier, text));
+        list.add(seg(ctbCRFClassifier, text));
         return list;
     }
-    private static String seg(String lang, String text){
-        Properties props = new Properties();
-        props.setProperty("sighanCorporaDict", "lib/stanford-segmenter-3.3.1/data");
-        props.setProperty("NormalizationTable", "lib/stanford-segmenter-3.3.1/data/norm.simp.utf8");
-        props.setProperty("normTableEncoding", "UTF-8");
-        // below is needed because CTBSegDocumentIteratorFactory accesses it
-        props.setProperty("serDictionary","lib/stanford-segmenter-3.3.1/data/dict-chris6.ser.gz");
-        props.setProperty("inputEncoding", "UTF-8");
-        props.setProperty("sighanPostProcessing", "true");
-        
-        final CRFClassifier<CoreLabel> segmenter = new CRFClassifier<>(props);
-        segmenter.loadClassifierNoExceptions("lib/stanford-segmenter-3.3.1/data/"+lang+".gz", props);
-        
+    private static String seg(CRFClassifier<CoreLabel> crfClassifier, String text){
         StringBuilder result = new StringBuilder();
-        for(String word : segmenter.segmentString(text)){
+        for(String word : crfClassifier.segmentString(text)){
             result.append(word).append(" ");
         }
         return result.toString();
