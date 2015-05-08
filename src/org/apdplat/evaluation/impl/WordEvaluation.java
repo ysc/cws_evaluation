@@ -51,11 +51,7 @@ public class WordEvaluation extends Evaluation{
         float rate = segFile(testText, resultText, new Segmenter(){
             @Override
             public String seg(String text) {
-                StringBuilder result = new StringBuilder();
-                for(Word word : WordSegmenter.segWithStopWords(text, segmentationAlgorithm)){
-                    result.append(word.getText()).append(" ");
-                }
-                return result.toString();
+                return WordEvaluation.seg(text, segmentationAlgorithm);
             }
         });
         //对分词结果进行评估
@@ -63,6 +59,21 @@ public class WordEvaluation extends Evaluation{
         evaluationResult.setAnalyzer("word分词 "+segmentationAlgorithm.getDes());
         evaluationResult.setSegSpeed(rate);
         return evaluationResult;
+    }
+    @Override
+    public List<String> seg(String text) {
+        List<String> list = new ArrayList<>();
+        for(SegmentationAlgorithm segmentationAlgorithm : SegmentationAlgorithm.values()){
+            list.add(seg(text, segmentationAlgorithm));
+        }
+        return list;
+    }
+    public static String seg(String text, SegmentationAlgorithm segmentationAlgorithm) {
+        StringBuilder result = new StringBuilder();
+        for(Word word : WordSegmenter.segWithStopWords(text, segmentationAlgorithm)){
+            result.append(word.getText()).append(" ");
+        }
+        return result.toString();
     }
     public static void main(String[] args) throws Exception{
         new WordEvaluation().run();
