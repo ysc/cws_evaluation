@@ -47,11 +47,14 @@ public class MMSeg4jEvaluation extends Evaluation{
         
         System.out.println("开始评估 MMSeg4j ComplexSeg");
         list.add(run(new ComplexSeg(dic)));
+        Evaluation.generateReport(list, "MMSeg4j分词器分词效果评估报告.txt");
+        
         System.out.println("开始评估 MMSeg4j SimpleSeg");
         list.add(run(new SimpleSeg(dic)));
+        Evaluation.generateReport(list, "MMSeg4j分词器分词效果评估报告.txt");
+        
         System.out.println("开始评估 MMSeg4j MaxWordSeg");
         list.add(run(new MaxWordSeg(dic)));
-        
         Evaluation.generateReport(list, "MMSeg4j分词器分词效果评估报告.txt");
         
         return list;
@@ -83,6 +86,15 @@ public class MMSeg4jEvaluation extends Evaluation{
             throw new RuntimeException(ex);
         }
         return result.toString();
+    }
+    @Override
+    public List<String> seg(String text) {
+        List<String> list = new ArrayList<>();
+        Dictionary dic = Dictionary.getInstance();
+        list.add(segText(text, new ComplexSeg(dic)));
+        list.add(segText(text, new SimpleSeg(dic)));
+        list.add(segText(text, new MaxWordSeg(dic)));
+        return list;
     }
     public static void main(String[] args) throws Exception{
         new MMSeg4jEvaluation().run();
