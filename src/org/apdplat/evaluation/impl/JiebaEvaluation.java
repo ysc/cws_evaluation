@@ -35,6 +35,7 @@ import org.apdplat.evaluation.WordSegmenter;
  * @author 杨尚川
  */
 public class JiebaEvaluation extends Evaluation implements WordSegmenter{
+    private static final JiebaSegmenter SEGMENTER = new JiebaSegmenter();
     @Override
     public List<EvaluationResult> run() throws Exception {
         List<EvaluationResult> list = new ArrayList<>();
@@ -50,14 +51,13 @@ public class JiebaEvaluation extends Evaluation implements WordSegmenter{
         return list;
     }
     private EvaluationResult run(final SegMode segMode) throws Exception{
-        final JiebaSegmenter segmenter = new JiebaSegmenter();
         // 对文本进行分词
         String resultText = "temp/result-text-"+segMode+".txt";
         float rate = segFile(testText, resultText, new Segmenter(){
             @Override
             public String seg(String text) {
                 StringBuilder result = new StringBuilder();                
-                for(SegToken token : segmenter.process(text, segMode)){
+                for(SegToken token : SEGMENTER.process(text, segMode)){
                     result.append(token.token).append(" ");
                 }
                 return result.toString();                
@@ -72,14 +72,13 @@ public class JiebaEvaluation extends Evaluation implements WordSegmenter{
     @Override
     public List<String> seg(String text) {
         List<String> list = new ArrayList<>();
-        JiebaSegmenter segmenter = new JiebaSegmenter();
-        list.add(seg(text, segmenter, SegMode.INDEX));
-        list.add(seg(text, segmenter, SegMode.SEARCH));
+        list.add(seg(text, SegMode.INDEX));
+        list.add(seg(text, SegMode.SEARCH));
         return list;
     }
-    public String seg(String text, JiebaSegmenter segmenter, SegMode segMode) {
+    public String seg(String text, SegMode segMode) {
         StringBuilder result = new StringBuilder();                
-        for(SegToken token : segmenter.process(text, segMode)){
+        for(SegToken token : SEGMENTER.process(text, segMode)){
             result.append(token.token).append(" ");
         }
         return result.toString(); 
