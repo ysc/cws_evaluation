@@ -21,7 +21,10 @@
 package org.apdplat.evaluation.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.apdplat.evaluation.Evaluation;
 import org.apdplat.evaluation.EvaluationResult;
 import org.apdplat.evaluation.Segmenter;
@@ -61,12 +64,12 @@ public class WordEvaluation extends Evaluation implements org.apdplat.evaluation
         return evaluationResult;
     }
     @Override
-    public List<String> seg(String text) {
-        List<String> list = new ArrayList<>();
+    public Set<String> seg(String text) {
+        Set<String> set = new HashSet<>();
         for(SegmentationAlgorithm segmentationAlgorithm : SegmentationAlgorithm.values()){
-            list.add(seg(text, segmentationAlgorithm));
+            set.add(seg(text, segmentationAlgorithm));
         }
-        return list;
+        return set;
     }
     public static String seg(String text, SegmentationAlgorithm segmentationAlgorithm) {
         StringBuilder result = new StringBuilder();

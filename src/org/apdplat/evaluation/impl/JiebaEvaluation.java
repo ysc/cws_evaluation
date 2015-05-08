@@ -24,7 +24,10 @@ import com.huaban.analysis.jieba.JiebaSegmenter;
 import com.huaban.analysis.jieba.JiebaSegmenter.SegMode;
 import com.huaban.analysis.jieba.SegToken;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.apdplat.evaluation.Evaluation;
 import org.apdplat.evaluation.EvaluationResult;
 import org.apdplat.evaluation.Segmenter;
@@ -35,7 +38,6 @@ import org.apdplat.evaluation.WordSegmenter;
  * @author 杨尚川
  */
 public class JiebaEvaluation extends Evaluation implements WordSegmenter{
-    private static final JiebaSegmenter SEGMENTER = new JiebaSegmenter();
     @Override
     public List<EvaluationResult> run() throws Exception {
         List<EvaluationResult> list = new ArrayList<>();
@@ -51,13 +53,14 @@ public class JiebaEvaluation extends Evaluation implements WordSegmenter{
         return list;
     }
     private EvaluationResult run(final SegMode segMode) throws Exception{
+        final JiebaSegmenter segmenter = new JiebaSegmenter();
         // 对文本进行分词
         String resultText = "temp/result-text-"+segMode+".txt";
         float rate = segFile(testText, resultText, new Segmenter(){
             @Override
             public String seg(String text) {
                 StringBuilder result = new StringBuilder();                
-                for(SegToken token : SEGMENTER.process(text, segMode)){
+                for(SegToken token : segmenter.process(text, segMode)){
                     result.append(token.token).append(" ");
                 }
                 return result.toString();                
@@ -70,15 +73,16 @@ public class JiebaEvaluation extends Evaluation implements WordSegmenter{
         return result;
     }
     @Override
-    public List<String> seg(String text) {
-        List<String> list = new ArrayList<>();
-        list.add(seg(text, SegMode.INDEX));
-        list.add(seg(text, SegMode.SEARCH));
-        return list;
+    public Set<String> seg(String text) {
+        Set<String> set = new HashSet<>();
+        JiebaSegmenter segmenter = new JiebaSegmenter();
+        set.add(seg(text, segmenter, SegMode.INDEX));
+        set.add(seg(text, segmenter, SegMode.SEARCH));
+        return set;
     }
-    public String seg(String text, SegMode segMode) {
+    public String seg(String text, JiebaSegmenter segmenter, SegMode segMode) {
         StringBuilder result = new StringBuilder();                
-        for(SegToken token : SEGMENTER.process(text, segMode)){
+        for(SegToken token : segmenter.process(text, segMode)){
             result.append(token.token).append(" ");
         }
         return result.toString(); 

@@ -21,7 +21,10 @@
 package org.apdplat.evaluation.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.BaseAnalysis;
 import org.ansj.splitWord.analysis.IndexAnalysis;
@@ -115,34 +118,34 @@ public class AnsjEvaluation extends Evaluation implements WordSegmenter{
         return result;
     }
     @Override
-    public List<String> seg(String text) {
-        List<String> list = new ArrayList<>();
+    public Set<String> seg(String text) {
+        Set<String> set = new HashSet<>();
         
         StringBuilder result = new StringBuilder();
         for(Term term : BaseAnalysis.parse(text)){
             result.append(term.getName()).append(" ");                    
-        }     
-        list.add(result.toString());
+        }
+        set.add(result.toString());
         
         result.setLength(0);
         for(Term term : ToAnalysis.parse(text)){
             result.append(term.getName()).append(" ");                    
-        }     
-        list.add(result.toString());
+        }
+        set.add(result.toString());
         
         result.setLength(0);
         for(Term term : NlpAnalysis.parse(text)){
             result.append(term.getName()).append(" ");                    
-        }     
-        list.add(result.toString());
+        }
+        set.add(result.toString());
         
         result.setLength(0);
         for(Term term : IndexAnalysis.parse(text)){
             result.append(term.getName()).append(" ");                    
-        }     
-        list.add(result.toString());
+        }
+        set.add(result.toString());
         
-        return list;
+        return set;
     }
     public static void main(String[] args) throws Exception{
         new AnsjEvaluation().run();

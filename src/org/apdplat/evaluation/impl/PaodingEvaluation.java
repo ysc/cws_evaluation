@@ -22,7 +22,10 @@ package org.apdplat.evaluation.impl;
 
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import net.paoding.analysis.analyzer.PaodingAnalyzer;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
@@ -36,7 +39,6 @@ import org.apdplat.evaluation.WordSegmenter;
  * @author 杨尚川
  */
 public class PaodingEvaluation extends Evaluation implements WordSegmenter{
-    private static final PaodingAnalyzer ANALYZER = new PaodingAnalyzer();
     @Override
     public List<EvaluationResult> run() throws Exception {
         List<EvaluationResult> list = new ArrayList<>();
@@ -52,14 +54,15 @@ public class PaodingEvaluation extends Evaluation implements WordSegmenter{
         return list;
     }
     private EvaluationResult run(final int mode) throws Exception{
-        ANALYZER.setMode(mode);
+        final PaodingAnalyzer analyzer = new PaodingAnalyzer();
+        analyzer.setMode(mode);
         String type = PaodingAnalyzer.MAX_WORD_LENGTH_MODE == mode ? "MAX_WORD_LENGTH_MODE" : "MOST_WORDS_MODE";
         // 对文本进行分词
         String resultText = "temp/result-text-"+type+".txt";
         float rate = segFile(testText, resultText, new Segmenter(){
             @Override
             public String seg(String text) {
-                return PaodingEvaluation.seg(text, ANALYZER);               
+                return PaodingEvaluation.seg(text, analyzer);               
             }
         });
         // 对分词结果进行评估
@@ -69,16 +72,17 @@ public class PaodingEvaluation extends Evaluation implements WordSegmenter{
         return result;
     }
     @Override
-    public List<String> seg(String text) {
-        List<String> list = new ArrayList<>();
+    public Set<String> seg(String text) {
+        Set<String> set = new HashSet<>();
         
-        ANALYZER.setMode(PaodingAnalyzer.MOST_WORDS_MODE);
-        list.add(seg(text, ANALYZER));
+        PaodingAnalyzer analyzer = new PaodingAnalyzer();
+        analyzer.setMode(PaodingAnalyzer.MOST_WORDS_MODE);
+        set.add(seg(text, analyzer));
         
-        ANALYZER.setMode(PaodingAnalyzer.MAX_WORD_LENGTH_MODE);
-        list.add(seg(text, ANALYZER));
+        analyzer.setMode(PaodingAnalyzer.MAX_WORD_LENGTH_MODE);
+        set.add(seg(text, analyzer));
         
-        return list;
+        return set;
     }
     private static String seg(String text, PaodingAnalyzer analyzer){
         StringBuilder result = new StringBuilder();

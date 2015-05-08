@@ -30,7 +30,10 @@ import com.chenlb.mmseg4j.Word;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.apdplat.evaluation.Evaluation;
 import org.apdplat.evaluation.EvaluationResult;
 import org.apdplat.evaluation.Segmenter;
@@ -41,24 +44,21 @@ import org.apdplat.evaluation.WordSegmenter;
  * @author 杨尚川
  */
 public class MMSeg4jEvaluation extends Evaluation implements WordSegmenter{
-    private static final Dictionary DIC = Dictionary.getInstance();
-    private static final ComplexSeg COMPLEX_SEG = new ComplexSeg(DIC);
-    private static final SimpleSeg  SIMPLE_SEG = new SimpleSeg(DIC);
-    private static final MaxWordSeg MAX_WORD_SEG = new MaxWordSeg(DIC);
     @Override
     public List<EvaluationResult> run() throws Exception {
         List<EvaluationResult> list = new ArrayList<>();
+        Dictionary dic = Dictionary.getInstance();
         
         System.out.println("开始评估 MMSeg4j ComplexSeg");
-        list.add(run(COMPLEX_SEG));
+        list.add(run(new ComplexSeg(dic)));
         Evaluation.generateReport(list, "MMSeg4j分词器分词效果评估报告.txt");
         
         System.out.println("开始评估 MMSeg4j SimpleSeg");
-        list.add(run(SIMPLE_SEG));
+        list.add(run(new SimpleSeg(dic)));
         Evaluation.generateReport(list, "MMSeg4j分词器分词效果评估报告.txt");
         
         System.out.println("开始评估 MMSeg4j MaxWordSeg");
-        list.add(run(MAX_WORD_SEG));
+        list.add(run(new MaxWordSeg(dic)));
         Evaluation.generateReport(list, "MMSeg4j分词器分词效果评估报告.txt");
         
         return list;
@@ -92,12 +92,13 @@ public class MMSeg4jEvaluation extends Evaluation implements WordSegmenter{
         return result.toString();
     }
     @Override
-    public List<String> seg(String text) {
-        List<String> list = new ArrayList<>();
-        list.add(segText(text, COMPLEX_SEG));
-        list.add(segText(text, SIMPLE_SEG));
-        list.add(segText(text, MAX_WORD_SEG));
-        return list;
+    public Set<String> seg(String text) {
+        Set<String> set = new HashSet<>();
+        Dictionary dic = Dictionary.getInstance();
+        set.add(segText(text, new ComplexSeg(dic)));
+        set.add(segText(text, new SimpleSeg(dic)));
+        set.add(segText(text, new MaxWordSeg(dic)));
+        return set;
     }
     public static void main(String[] args) throws Exception{
         new MMSeg4jEvaluation().run();

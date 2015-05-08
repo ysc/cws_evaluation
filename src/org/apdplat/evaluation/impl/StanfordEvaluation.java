@@ -26,9 +26,8 @@ import java.io.File;
 import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
+
 import org.apdplat.evaluation.Evaluation;
 import org.apdplat.evaluation.EvaluationResult;
 import org.apdplat.evaluation.Segmenter;
@@ -149,11 +148,11 @@ public class StanfordEvaluation extends Evaluation implements WordSegmenter{
         return endPointer;
     }
     @Override
-    public List<String> seg(String text) {
-        List<String> list = new ArrayList<>();
-        list.add(seg(pkuCRFClassifier, text));
-        list.add(seg(ctbCRFClassifier, text));
-        return list;
+    public Set<String> seg(String text) {
+        Set<String> set = new HashSet<>();
+        set.add(seg(pkuCRFClassifier, text));
+        set.add(seg(ctbCRFClassifier, text));
+        return set;
     }
     private static String seg(CRFClassifier<CoreLabel> crfClassifier, String text){
         StringBuilder result = new StringBuilder();

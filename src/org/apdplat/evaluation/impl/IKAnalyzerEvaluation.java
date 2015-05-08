@@ -23,7 +23,10 @@ package org.apdplat.evaluation.impl;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.apdplat.evaluation.Evaluation;
 import org.apdplat.evaluation.EvaluationResult;
 import org.apdplat.evaluation.Segmenter;
@@ -83,13 +86,13 @@ public class IKAnalyzerEvaluation extends Evaluation implements WordSegmenter{
         return result.toString();
     }
     @Override
-    public List<String> seg(String text) {
-        List<String> list = new ArrayList<>();
+    public Set<String> seg(String text) {
+        Set<String> set = new HashSet<>();
         
-        list.add(segText(text, true));
-        list.add(segText(text, false));
+        set.add(segText(text, true));
+        set.add(segText(text, false));
         
-        return list;
+        return set;
     }
     public static void main(String[] args) throws Exception{
         new IKAnalyzerEvaluation().run();
