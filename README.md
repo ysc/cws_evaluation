@@ -8,9 +8,7 @@
 
    如何建立开发环境？
 
-   使用自己喜欢的IDE如Eclipse、MyEclipse、Netbeans、IDEA等新建一个项目
-   然后把本项目下的data、lib、src三个文件夹拷贝到刚才新建的项目根路径下
-   接着把lib下面的jar包加入classpath
+   直接使用Eclipse、MyEclipse、Netbeans、IDEA打开项目即可
 
    评估采用的测试文本有253 3709行，共2837 4490个字符
    
