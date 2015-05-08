@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="lib/ansj_seg-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/fudannlp.jar"/>
+	<classpathentry kind="lib" path="lib/IKAnalyzer2012_u6.jar"/>
+	<classpathentry kind="lib" path="lib/jcseg-core-1.9.2.jar"/>
+	<classpathentry kind="lib" path="lib/jieba-analysis-0.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/logback-classic-0.9.28.jar"/>
+	<classpathentry kind="lib" path="lib/logback-core-0.9.28.jar"/>
+	<classpathentry kind="lib" path="lib/lucene-core-2.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/mmseg4j-core-1.9.1.jar"/>
+	<classpathentry kind="lib" path="lib/paoding-analysis-2.0.4-beta.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.6.4.jar"/>
+	<classpathentry kind="lib" path="lib/stanford-segmenter-3.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/tree_split-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/trove.jar"/>
+	<classpathentry kind="lib" path="lib/word-1.2.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
