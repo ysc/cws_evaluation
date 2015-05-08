@@ -36,6 +36,7 @@ import org.apdplat.evaluation.WordSegmenter;
  * @author 杨尚川
  */
 public class PaodingEvaluation extends Evaluation implements WordSegmenter{
+    private static final PaodingAnalyzer ANALYZER = new PaodingAnalyzer();
     @Override
     public List<EvaluationResult> run() throws Exception {
         List<EvaluationResult> list = new ArrayList<>();
@@ -51,15 +52,14 @@ public class PaodingEvaluation extends Evaluation implements WordSegmenter{
         return list;
     }
     private EvaluationResult run(final int mode) throws Exception{
-        final PaodingAnalyzer analyzer = new PaodingAnalyzer();
-        analyzer.setMode(mode);
+        ANALYZER.setMode(mode);
         String type = PaodingAnalyzer.MAX_WORD_LENGTH_MODE == mode ? "MAX_WORD_LENGTH_MODE" : "MOST_WORDS_MODE";
         // 对文本进行分词
         String resultText = "temp/result-text-"+type+".txt";
         float rate = segFile(testText, resultText, new Segmenter(){
             @Override
             public String seg(String text) {
-                return PaodingEvaluation.seg(text, analyzer);               
+                return PaodingEvaluation.seg(text, ANALYZER);               
             }
         });
         // 对分词结果进行评估
@@ -72,12 +72,11 @@ public class PaodingEvaluation extends Evaluation implements WordSegmenter{
     public List<String> seg(String text) {
         List<String> list = new ArrayList<>();
         
-        PaodingAnalyzer analyzer = new PaodingAnalyzer();
-        analyzer.setMode(PaodingAnalyzer.MOST_WORDS_MODE);
-        list.add(seg(text, analyzer));
+        ANALYZER.setMode(PaodingAnalyzer.MOST_WORDS_MODE);
+        list.add(seg(text, ANALYZER));
         
-        analyzer.setMode(PaodingAnalyzer.MAX_WORD_LENGTH_MODE);
-        list.add(seg(text, analyzer));
+        ANALYZER.setMode(PaodingAnalyzer.MAX_WORD_LENGTH_MODE);
+        list.add(seg(text, ANALYZER));
         
         return list;
     }
