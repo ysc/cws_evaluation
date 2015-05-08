@@ -41,21 +41,24 @@ import org.apdplat.evaluation.WordSegmenter;
  * @author 杨尚川
  */
 public class MMSeg4jEvaluation extends Evaluation implements WordSegmenter{
+    private static final Dictionary DIC = Dictionary.getInstance();
+    private static final ComplexSeg COMPLEX_SEG = new ComplexSeg(DIC);
+    private static final SimpleSeg  SIMPLE_SEG = new SimpleSeg(DIC);
+    private static final MaxWordSeg MAX_WORD_SEG = new MaxWordSeg(DIC);
     @Override
     public List<EvaluationResult> run() throws Exception {
         List<EvaluationResult> list = new ArrayList<>();
-        Dictionary dic = Dictionary.getInstance();
         
         System.out.println("开始评估 MMSeg4j ComplexSeg");
-        list.add(run(new ComplexSeg(dic)));
+        list.add(run(COMPLEX_SEG));
         Evaluation.generateReport(list, "MMSeg4j分词器分词效果评估报告.txt");
         
         System.out.println("开始评估 MMSeg4j SimpleSeg");
-        list.add(run(new SimpleSeg(dic)));
+        list.add(run(SIMPLE_SEG));
         Evaluation.generateReport(list, "MMSeg4j分词器分词效果评估报告.txt");
         
         System.out.println("开始评估 MMSeg4j MaxWordSeg");
-        list.add(run(new MaxWordSeg(dic)));
+        list.add(run(MAX_WORD_SEG));
         Evaluation.generateReport(list, "MMSeg4j分词器分词效果评估报告.txt");
         
         return list;
@@ -91,10 +94,9 @@ public class MMSeg4jEvaluation extends Evaluation implements WordSegmenter{
     @Override
     public List<String> seg(String text) {
         List<String> list = new ArrayList<>();
-        Dictionary dic = Dictionary.getInstance();
-        list.add(segText(text, new ComplexSeg(dic)));
-        list.add(segText(text, new SimpleSeg(dic)));
-        list.add(segText(text, new MaxWordSeg(dic)));
+        list.add(segText(text, COMPLEX_SEG));
+        list.add(segText(text, SIMPLE_SEG));
+        list.add(segText(text, MAX_WORD_SEG));
         return list;
     }
     public static void main(String[] args) throws Exception{
