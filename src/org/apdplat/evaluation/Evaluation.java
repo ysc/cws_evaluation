@@ -152,13 +152,18 @@ public abstract class Evaluation {
                     writer.write("\n");
                     continue;
                 }
-                textLength += line.length();
-                writer.write(segmenter.seg(line));
-                writer.write("\n");
-                progress += line.length();
-                if( progress > 500000){
-                    progress = 0;
-                    System.out.println("分词进度："+(int)(textLength*2.99/size*100)+"%");
+                try{
+                    writer.write(segmenter.seg(line));
+                    writer.write("\n");
+                    textLength += line.length();
+                    progress += line.length();
+                    if( progress > 500000){
+                        progress = 0;
+                        System.out.println("分词进度："+(int)(textLength*2.99/size*100)+"%");
+                    }
+                }catch(Exception e){
+                    System.out.println("分词失败："+line);
+                    e.printStackTrace();
                 }
             }
             long cost = System.currentTimeMillis() - start;
