@@ -39,6 +39,13 @@ import org.lionsoul.jcseg.core.SegmentFactory;
  * @author 杨尚川
  */
 public class JcsegEvaluation extends Evaluation implements WordSegmenter{
+    private static final JcsegTaskConfig config = new JcsegTaskConfig();
+    private static ADictionary dic = null;
+    static{
+        config.setLoadCJKSyn(false);
+        config.setLoadCJKPinyin(false);
+        dic = DictionaryFactory.createDefaultDictionary(config);
+    }
     @Override
     public List<EvaluationResult> run() throws Exception {
         List<EvaluationResult> list = new ArrayList<>();
@@ -53,18 +60,14 @@ public class JcsegEvaluation extends Evaluation implements WordSegmenter{
         
         return list;
     }
-    private EvaluationResult run(final int segMode) throws Exception{        
-        final JcsegTaskConfig config = new JcsegTaskConfig();
-        config.setLoadCJKSyn(false);
-        config.setLoadCJKPinyin(false);
-        final ADictionary dic = DictionaryFactory.createDefaultDictionary(config);
+    private EvaluationResult run(final int segMode) throws Exception{
         // 对文本进行分词
         String type = JcsegTaskConfig.COMPLEX_MODE==segMode?"Jcseg 复杂模式":"Jcseg 简易模式";
         String resultText = "temp/result-text-"+type+".txt";
         float rate = segFile(testText, resultText, new Segmenter(){
             @Override
             public String seg(String text) {
-                return segText(text, segMode, config, dic);                
+                return segText(text, segMode);                
             }
         });
         // 对分词结果进行评估
@@ -73,7 +76,7 @@ public class JcsegEvaluation extends Evaluation implements WordSegmenter{
         result.setSegSpeed(rate);
         return result;
     }
-    private String segText(String text, int segMode, JcsegTaskConfig config, ADictionary dic) {
+    private String segText(String text, int segMode) {
         StringBuilder result = new StringBuilder();        
         try {
             ISegment seg = SegmentFactory.createJcseg(segMode, new Object[]{new StringReader(text), config, dic});
@@ -82,7 +85,7 @@ public class JcsegEvaluation extends Evaluation implements WordSegmenter{
                 result.append(word.getValue()).append(" ");
             }
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            ex.printStackTrace();
         }
         return result.toString();
     }
@@ -90,13 +93,8 @@ public class JcsegEvaluation extends Evaluation implements WordSegmenter{
     public List<String> seg(String text) {
         List<String> list = new ArrayList<>();
         
-        JcsegTaskConfig config = new JcsegTaskConfig();
-        config.setLoadCJKSyn(false);
-        config.setLoadCJKPinyin(false);
-        ADictionary dic = DictionaryFactory.createDefaultDictionary(config);
-        
-        list.add(segText(text, JcsegTaskConfig.COMPLEX_MODE, config, dic));
-        list.add(segText(text, JcsegTaskConfig.SIMPLE_MODE, config, dic));
+        list.add(segText(text, JcsegTaskConfig.COMPLEX_MODE));
+        list.add(segText(text, JcsegTaskConfig.SIMPLE_MODE));
         
         return list;
     }
