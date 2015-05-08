@@ -61,6 +61,18 @@ public class FudanNLPEvaluation extends Evaluation{
         result.setSegSpeed(rate);
         return result;
     }
+    @Override
+    public List<String> seg(String text) {
+        List<String> list = new ArrayList<>();
+        try{
+            CWSTagger tagger = new CWSTagger("lib/fudannlp_seg.m");
+            tagger.setEnFilter(true);
+            list.add(tagger.tag(text));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return list;
+    }
     public static void main(String[] args) throws Exception{
         new FudanNLPEvaluation().run();
     }
