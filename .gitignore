@@ -15,5 +15,6 @@ cws_evaluation.iml
 cws_evaluation.ipr
 cws_evaluation.iws
 out/
+bin/
 dist/
 logs/
