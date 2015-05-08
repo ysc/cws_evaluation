@@ -40,9 +40,10 @@ public class JiebaEvaluation extends Evaluation{
         
         System.out.println("开始评估 Jieba "+SegMode.INDEX);
         list.add(run(SegMode.INDEX));
+        Evaluation.generateReport(list, "Jieba分词器分词效果评估报告.txt");
+        
         System.out.println("开始评估 Jieba "+SegMode.SEARCH);
         list.add(run(SegMode.SEARCH));
-        
         Evaluation.generateReport(list, "Jieba分词器分词效果评估报告.txt");
         
         return list;
@@ -66,6 +67,21 @@ public class JiebaEvaluation extends Evaluation{
         result.setAnalyzer("Jieba "+segMode);
         result.setSegSpeed(rate);
         return result;
+    }
+    @Override
+    public List<String> seg(String text) {
+        List<String> list = new ArrayList<>();
+        JiebaSegmenter segmenter = new JiebaSegmenter();
+        list.add(seg(text, segmenter, SegMode.INDEX));
+        list.add(seg(text, segmenter, SegMode.SEARCH));
+        return list;
+    }
+    public String seg(String text, JiebaSegmenter segmenter, SegMode segMode) {
+        StringBuilder result = new StringBuilder();                
+        for(SegToken token : segmenter.process(text, segMode)){
+            result.append(token.token).append(" ");
+        }
+        return result.toString(); 
     }
     public static void main(String[] args) throws Exception{
         new JiebaEvaluation().run();
