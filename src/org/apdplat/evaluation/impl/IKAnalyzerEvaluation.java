@@ -41,9 +41,10 @@ public class IKAnalyzerEvaluation extends Evaluation{
         
         System.out.println("开始评估 IKAnalyzer 智能切分");
         list.add(run(true));
+        Evaluation.generateReport(list, "IKAnalyzer分词器分词效果评估报告.txt");
+        
         System.out.println("开始评估 IKAnalyzer 细粒度切分");
         list.add(run(false));
-        
         Evaluation.generateReport(list, "IKAnalyzer分词器分词效果评估报告.txt");
         
         return list;
@@ -79,6 +80,15 @@ public class IKAnalyzerEvaluation extends Evaluation{
             throw new RuntimeException(ex);
         }
         return result.toString();
+    }
+    @Override
+    public List<String> seg(String text) {
+        List<String> list = new ArrayList<>();
+        
+        list.add(segText(text, true));
+        list.add(segText(text, false));
+        
+        return list;
     }
     public static void main(String[] args) throws Exception{
         new IKAnalyzerEvaluation().run();
