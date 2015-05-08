@@ -43,10 +43,11 @@ public class JcsegEvaluation extends Evaluation{
         List<EvaluationResult> list = new ArrayList<>();
         
         System.out.println("开始评估 Jcseg 复杂模式");
-        list.add(run(JcsegTaskConfig.COMPLEX_MODE));        
+        list.add(run(JcsegTaskConfig.COMPLEX_MODE));   
+        Evaluation.generateReport(list, "Jcseg分词器分词效果评估报告.txt");
+        
         System.out.println("开始评估 Jcseg 简易模式");
         list.add(run(JcsegTaskConfig.SIMPLE_MODE));
-        
         Evaluation.generateReport(list, "Jcseg分词器分词效果评估报告.txt");
         
         return list;
@@ -83,6 +84,20 @@ public class JcsegEvaluation extends Evaluation{
             throw new RuntimeException(ex);
         }
         return result.toString();
+    }
+    @Override
+    public List<String> seg(String text) {
+        List<String> list = new ArrayList<>();
+        
+        JcsegTaskConfig config = new JcsegTaskConfig();
+        config.setLoadCJKSyn(false);
+        config.setLoadCJKPinyin(false);
+        ADictionary dic = DictionaryFactory.createDefaultDictionary(config);
+        
+        list.add(segText(text, JcsegTaskConfig.COMPLEX_MODE, config, dic));
+        list.add(segText(text, JcsegTaskConfig.SIMPLE_MODE, config, dic));
+        
+        return list;
     }
     public static void main(String[] args) throws Exception{
         new JcsegEvaluation().run();
