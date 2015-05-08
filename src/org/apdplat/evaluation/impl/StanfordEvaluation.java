@@ -32,12 +32,13 @@ import java.util.Properties;
 import org.apdplat.evaluation.Evaluation;
 import org.apdplat.evaluation.EvaluationResult;
 import org.apdplat.evaluation.Segmenter;
+import org.apdplat.evaluation.WordSegmenter;
 
 /**
  * Stanford分词器分词效果评估
  * @author 杨尚川
  */
-public class StanfordEvaluation extends Evaluation{
+public class StanfordEvaluation extends Evaluation implements WordSegmenter{
     static{
         try{
             String pku = "lib/stanford-segmenter-3.3.1/data/pku.gz";

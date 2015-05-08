@@ -33,7 +33,7 @@ import org.apdplat.word.segmentation.Word;
  * word分词器分词效果评估
  * @author 杨尚川
  */
-public class WordEvaluation extends Evaluation{
+public class WordEvaluation extends Evaluation implements org.apdplat.evaluation.WordSegmenter{
     @Override
     public List<EvaluationResult> run() throws Exception {
         List<EvaluationResult> list = new ArrayList<>();

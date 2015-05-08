@@ -28,12 +28,13 @@ import java.util.List;
 import org.apdplat.evaluation.Evaluation;
 import org.apdplat.evaluation.EvaluationResult;
 import org.apdplat.evaluation.Segmenter;
+import org.apdplat.evaluation.WordSegmenter;
 
 /**
  * Jieba分词器分词效果评估
  * @author 杨尚川
  */
-public class JiebaEvaluation extends Evaluation{
+public class JiebaEvaluation extends Evaluation implements WordSegmenter{
     @Override
     public List<EvaluationResult> run() throws Exception {
         List<EvaluationResult> list = new ArrayList<>();
