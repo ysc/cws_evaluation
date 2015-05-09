@@ -14,6 +14,8 @@
    
    运行org.apdplat.evaluation.WordSegmenter类可对比不同分词器结果
    
+   stanford分词器是吃内存的怪兽，运行的时候增加虚拟机参数 -Xms3000m -Xmx3000m
+   
    [可运行程序下载](http://pan.baidu.com/s/1jGwq682)
    
    windows:
