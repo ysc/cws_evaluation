@@ -47,11 +47,8 @@ public class FudanNLPEvaluation extends Evaluation implements WordSegmenter{
     public List<EvaluationResult> run() throws Exception {
         List<EvaluationResult> list = new ArrayList<>();
         
-        CWSTagger tag = new CWSTagger("lib/fudannlp_seg.m");
-        tag.setEnFilter(true);
-        
         System.out.println("开始评估 FudanNLP");
-        list.add(run(tag));
+        list.add(run(tagger));
         
         Evaluation.generateReport(list, "FudanNLP分词器分词效果评估报告.txt");
         
