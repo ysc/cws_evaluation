@@ -61,10 +61,6 @@ public class WordEvaluation extends Evaluation implements org.apdplat.evaluation
         return evaluationResult;
     }
     @Override
-    public Set<String> seg(String text) {
-        return segMore(text).values().stream().collect(Collectors.toSet());
-    }
-    @Override
     public Map<String, String> segMore(String text) {
         Map<String, String> map = new HashMap<>();
         for(SegmentationAlgorithm segmentationAlgorithm : SegmentationAlgorithm.values()){
