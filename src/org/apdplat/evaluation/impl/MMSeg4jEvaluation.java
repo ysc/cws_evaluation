@@ -29,10 +29,7 @@ import com.chenlb.mmseg4j.SimpleSeg;
 import com.chenlb.mmseg4j.Word;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.apdplat.evaluation.Evaluation;
 import org.apdplat.evaluation.EvaluationResult;
@@ -44,21 +41,24 @@ import org.apdplat.evaluation.WordSegmenter;
  * @author 杨尚川
  */
 public class MMSeg4jEvaluation extends Evaluation implements WordSegmenter{
+    private static final Dictionary DIC = Dictionary.getInstance();
+    private static final SimpleSeg SIMPLE_SEG = new SimpleSeg(DIC);
+    private static final ComplexSeg COMPLEX_SEG = new ComplexSeg(DIC);
+    private static final MaxWordSeg MAX_WORD_SEG = new MaxWordSeg(DIC);
     @Override
     public List<EvaluationResult> run() throws Exception {
         List<EvaluationResult> list = new ArrayList<>();
-        Dictionary dic = Dictionary.getInstance();
         
         System.out.println("开始评估 MMSeg4j ComplexSeg");
-        list.add(run(new ComplexSeg(dic)));
+        list.add(run(COMPLEX_SEG));
         Evaluation.generateReport(list, "MMSeg4j分词器分词效果评估报告.txt");
         
         System.out.println("开始评估 MMSeg4j SimpleSeg");
-        list.add(run(new SimpleSeg(dic)));
+        list.add(run(SIMPLE_SEG));
         Evaluation.generateReport(list, "MMSeg4j分词器分词效果评估报告.txt");
         
         System.out.println("开始评估 MMSeg4j MaxWordSeg");
-        list.add(run(new MaxWordSeg(dic)));
+        list.add(run(MAX_WORD_SEG));
         Evaluation.generateReport(list, "MMSeg4j分词器分词效果评估报告.txt");
         
         return list;
@@ -74,9 +74,17 @@ public class MMSeg4jEvaluation extends Evaluation implements WordSegmenter{
         });
         // 对分词结果进行评估
         EvaluationResult result = evaluate(resultText, standardText);
-        result.setAnalyzer("MMSeg4j "+seg.getClass().getSimpleName());
+        result.setAnalyzer("MMSeg4j " + seg.getClass().getSimpleName());
         result.setSegSpeed(rate);
         return result;
+    }
+    @Override
+    public Map<String, String> segMore(String text) {
+        Map<String, String> map = new HashMap<>();
+        map.put(SIMPLE_SEG.getClass().getSimpleName(), segText(text, SIMPLE_SEG));
+        map.put(COMPLEX_SEG.getClass().getSimpleName(), segText(text, COMPLEX_SEG));
+        map.put(MAX_WORD_SEG.getClass().getSimpleName(), segText(text, MAX_WORD_SEG));
+        return map;
     }
     private String segText(String text, Seg seg) {
         StringBuilder result = new StringBuilder();
@@ -90,15 +98,6 @@ public class MMSeg4jEvaluation extends Evaluation implements WordSegmenter{
             throw new RuntimeException(ex);
         }
         return result.toString();
-    }
-    @Override
-    public Set<String> seg(String text) {
-        Set<String> set = new HashSet<>();
-        Dictionary dic = Dictionary.getInstance();
-        set.add(segText(text, new ComplexSeg(dic)));
-        set.add(segText(text, new SimpleSeg(dic)));
-        set.add(segText(text, new MaxWordSeg(dic)));
-        return set;
     }
     public static void main(String[] args) throws Exception{
         new MMSeg4jEvaluation().run();
