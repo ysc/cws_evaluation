@@ -21,10 +21,8 @@
 package org.apdplat.evaluation.impl;
 
 import edu.fudan.nlp.cn.tag.CWSTagger;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
 
 import org.apdplat.evaluation.Evaluation;
 import org.apdplat.evaluation.EvaluationResult;
@@ -36,6 +34,15 @@ import org.apdplat.evaluation.WordSegmenter;
  * @author 杨尚川
  */
 public class FudanNLPEvaluation extends Evaluation implements WordSegmenter{
+    private static CWSTagger tagger = null;
+    static{
+        try{
+            tagger = new CWSTagger("lib/fudannlp_seg.m");
+            tagger.setEnFilter(true);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
     @Override
     public List<EvaluationResult> run() throws Exception {
         List<EvaluationResult> list = new ArrayList<>();
@@ -66,16 +73,10 @@ public class FudanNLPEvaluation extends Evaluation implements WordSegmenter{
         return result;
     }
     @Override
-    public Set<String> seg(String text) {
-        Set<String> set = new HashSet<>();
-        try{
-            CWSTagger tagger = new CWSTagger("lib/fudannlp_seg.m");
-            tagger.setEnFilter(true);
-            set.add(tagger.tag(text));
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return set;
+    public Map<String, String> segMore(String text) {
+        Map<String, String> map = new HashMap<>();
+        map.put("FudanNLP", tagger.tag(text));
+        return map;
     }
     public static void main(String[] args) throws Exception{
         new FudanNLPEvaluation().run();
