@@ -23,10 +23,8 @@ package org.apdplat.evaluation.impl;
 import com.huaban.analysis.jieba.JiebaSegmenter;
 import com.huaban.analysis.jieba.JiebaSegmenter.SegMode;
 import com.huaban.analysis.jieba.SegToken;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
 
 import org.apdplat.evaluation.Evaluation;
 import org.apdplat.evaluation.EvaluationResult;
@@ -38,6 +36,7 @@ import org.apdplat.evaluation.WordSegmenter;
  * @author 杨尚川
  */
 public class JiebaEvaluation extends Evaluation implements WordSegmenter{
+    private static final JiebaSegmenter JIEBA_SEGMENTER = new JiebaSegmenter();
     @Override
     public List<EvaluationResult> run() throws Exception {
         List<EvaluationResult> list = new ArrayList<>();
@@ -73,12 +72,11 @@ public class JiebaEvaluation extends Evaluation implements WordSegmenter{
         return result;
     }
     @Override
-    public Set<String> seg(String text) {
-        Set<String> set = new HashSet<>();
-        JiebaSegmenter segmenter = new JiebaSegmenter();
-        set.add(seg(text, segmenter, SegMode.INDEX));
-        set.add(seg(text, segmenter, SegMode.SEARCH));
-        return set;
+    public Map<String, String> segMore(String text) {
+        Map<String, String> map = new HashMap<>();
+        map.put("INDEX", seg(text, JIEBA_SEGMENTER, SegMode.INDEX));
+        map.put("SEARCH", seg(text, JIEBA_SEGMENTER, SegMode.SEARCH));
+        return map;
     }
     public String seg(String text, JiebaSegmenter segmenter, SegMode segMode) {
         StringBuilder result = new StringBuilder();                
