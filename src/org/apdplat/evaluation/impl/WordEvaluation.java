@@ -20,10 +20,8 @@
 
 package org.apdplat.evaluation.impl;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.apdplat.evaluation.Evaluation;
 import org.apdplat.evaluation.EvaluationResult;
@@ -40,12 +38,11 @@ public class WordEvaluation extends Evaluation implements org.apdplat.evaluation
     @Override
     public List<EvaluationResult> run() throws Exception {
         List<EvaluationResult> list = new ArrayList<>();
-        for(final SegmentationAlgorithm segmentationAlgorithm : SegmentationAlgorithm.values()){
-            System.out.println("开始评估 word分词 "+segmentationAlgorithm.getDes());
+        SegmentationAlgorithm segmentationAlgorithm = SegmentationAlgorithm.FullSegmentation;
+        System.out.println("开始评估 word分词 "+segmentationAlgorithm.getDes());
             list.add(run(segmentationAlgorithm));
             //每评估完一种算法就保存一次报告
             Evaluation.generateReport(list, "word分词器分词效果评估报告.txt");
-        }
         return list;
     }
     private EvaluationResult run(final SegmentationAlgorithm segmentationAlgorithm) throws Exception{
@@ -65,13 +62,17 @@ public class WordEvaluation extends Evaluation implements org.apdplat.evaluation
     }
     @Override
     public Set<String> seg(String text) {
-        Set<String> set = new HashSet<>();
-        for(SegmentationAlgorithm segmentationAlgorithm : SegmentationAlgorithm.values()){
-            set.add(seg(text, segmentationAlgorithm));
-        }
-        return set;
+        return segMore(text).values().stream().collect(Collectors.toSet());
     }
-    public static String seg(String text, SegmentationAlgorithm segmentationAlgorithm) {
+    @Override
+    public Map<String, String> segMore(String text) {
+        Map<String, String> map = new HashMap<>();
+        for(SegmentationAlgorithm segmentationAlgorithm : SegmentationAlgorithm.values()){
+            map.put(segmentationAlgorithm.getDes(), seg(text, segmentationAlgorithm));
+        }
+        return map;
+    }
+    private static String seg(String text, SegmentationAlgorithm segmentationAlgorithm) {
         StringBuilder result = new StringBuilder();
         for(Word word : WordSegmenter.segWithStopWords(text, segmentationAlgorithm)){
             result.append(word.getText()).append(" ");
