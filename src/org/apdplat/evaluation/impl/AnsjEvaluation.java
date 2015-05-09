@@ -20,10 +20,7 @@
 
 package org.apdplat.evaluation.impl;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.BaseAnalysis;
@@ -117,36 +114,38 @@ public class AnsjEvaluation extends Evaluation implements WordSegmenter{
         result.setAnalyzer(analyzer);
         return result;
     }
+
     @Override
-    public Set<String> seg(String text) {
-        Set<String> set = new HashSet<>();
-        
+    public Map<String, String> segMore(String text) {
+        Map<String, String> map = new HashMap<>();
+
         StringBuilder result = new StringBuilder();
         for(Term term : BaseAnalysis.parse(text)){
-            result.append(term.getName()).append(" ");                    
+            result.append(term.getName()).append(" ");
         }
-        set.add(result.toString());
-        
+        map.put("BaseAnalysis", result.toString());
+
         result.setLength(0);
         for(Term term : ToAnalysis.parse(text)){
-            result.append(term.getName()).append(" ");                    
+            result.append(term.getName()).append(" ");
         }
-        set.add(result.toString());
-        
+        map.put("ToAnalysis", result.toString());
+
         result.setLength(0);
         for(Term term : NlpAnalysis.parse(text)){
-            result.append(term.getName()).append(" ");                    
+            result.append(term.getName()).append(" ");
         }
-        set.add(result.toString());
-        
+        map.put("NlpAnalysis", result.toString());
+
         result.setLength(0);
         for(Term term : IndexAnalysis.parse(text)){
-            result.append(term.getName()).append(" ");                    
+            result.append(term.getName()).append(" ");
         }
-        set.add(result.toString());
-        
-        return set;
+        map.put("IndexAnalysis", result.toString());
+
+        return map;
     }
+
     public static void main(String[] args) throws Exception{
         new AnsjEvaluation().run();
     }
