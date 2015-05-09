@@ -68,7 +68,7 @@ public class StanfordEvaluation extends Evaluation implements WordSegmenter{
         props.setProperty("serDictionary","lib/stanford-segmenter-3.3.1/data/dict-chris6.ser.gz");
         props.setProperty("inputEncoding", "UTF-8");
         props.setProperty("sighanPostProcessing", "true");
-        
+
         final CRFClassifier<CoreLabel> segmenter = new CRFClassifier<>(props);
         segmenter.loadClassifierNoExceptions("lib/stanford-segmenter-3.3.1/data/"+lang+".gz", props);
         return segmenter;
@@ -148,12 +148,13 @@ public class StanfordEvaluation extends Evaluation implements WordSegmenter{
         return endPointer;
     }
     @Override
-    public Set<String> seg(String text) {
-        Set<String> set = new HashSet<>();
-        set.add(seg(pkuCRFClassifier, text));
-        set.add(seg(ctbCRFClassifier, text));
-        return set;
+    public Map<String, String> segMore(String text) {
+        Map<String, String> map = new HashMap<>();
+        map.put("Stanford Beijing University segmentation", seg(pkuCRFClassifier, text));
+        map.put("Stanford Chinese Treebank segmentation", seg(ctbCRFClassifier, text));
+        return map;
     }
+
     private static String seg(CRFClassifier<CoreLabel> crfClassifier, String text){
         StringBuilder result = new StringBuilder();
         for(String word : crfClassifier.segmentString(text)){
