@@ -29,15 +29,26 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 获取文本的所有分词结果, 对比不同分词器结果
+ * seg和segMore两个方法的区别在于返回值
+ * 每一个分词器都可能有多种分词模式，每种模式的分词结果都可能不相同
+ * 第一个方法忽略分词器模式，返回所有模式的所有不重复分词结果
+ * 第二个方法返回每一种分词器模式及其对应的分词结果
  * @author 杨尚川
  */
 public interface WordSegmenter {
     /**
      * 获取文本的所有分词结果
      * @param text 文本
-     * @return 所有的分词结果
+     * @return 所有的分词结果，去除重复
      */
     public Set<String> seg(String text);
+    /**
+     * 获取文本的所有分词结果
+     * @param text 文本
+     * @return 所有的分词结果，KEY 为分词器模式，VALUE 为分词器结果
+     */
+    public Map<String, String> segMore(String text);
+    
     public static Map<String, Set<String>> contrast(String text){
         Map<String, Set<String>> map = new HashMap<>();
         map.put("word分词器", new WordEvaluation().seg(text));
