@@ -23,6 +23,7 @@ package org.apdplat.evaluation;
 import org.apdplat.evaluation.impl.*;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -53,9 +54,9 @@ public interface WordSegmenter {
     public Map<String, String> segMore(String text);
     
     public static Map<String, Set<String>> contrast(String text){
-        Map<String, Set<String>> map = new HashMap<>();
+        Map<String, Set<String>> map = new LinkedHashMap<>();
         map.put("word分词器", new WordEvaluation().seg(text));
-        //map.put("Stanford分词器", new StanfordEvaluation().seg(text));
+        map.put("Stanford分词器", new StanfordEvaluation().seg(text));
         map.put("Ansj分词器", new AnsjEvaluation().seg(text));
         map.put("FudanNLP分词器", new FudanNLPEvaluation().seg(text));
         map.put("Jieba分词器", new JiebaEvaluation().seg(text));
@@ -65,17 +66,39 @@ public interface WordSegmenter {
         map.put("Paoding分词器", new PaodingEvaluation().seg(text));
         return map;
     }
+    public static Map<String, Map<String, String>> contrastMore(String text){
+        Map<String, Map<String, String>> map = new LinkedHashMap<>();
+        map.put("word分词器", new WordEvaluation().segMore(text));
+        map.put("Stanford分词器", new StanfordEvaluation().segMore(text));
+        map.put("Ansj分词器", new AnsjEvaluation().segMore(text));
+        map.put("FudanNLP分词器", new FudanNLPEvaluation().segMore(text));
+        map.put("Jieba分词器", new JiebaEvaluation().segMore(text));
+        map.put("Jcseg分词器", new JcsegEvaluation().segMore(text));
+        map.put("MMSeg4j分词器", new MMSeg4jEvaluation().segMore(text));
+        map.put("IKAnalyzer分词器", new IKAnalyzerEvaluation().segMore(text));
+        map.put("Paoding分词器", new PaodingEvaluation().segMore(text));
+        return map;
+    }
     public static void show(Map<String, Set<String>> map){
+        map.keySet().forEach(k -> {
+            System.out.println(k + " 的分词结果：");
+            AtomicInteger i = new AtomicInteger();
+            map.get(k).forEach(v -> {
+                System.out.println("\t" + i.incrementAndGet() + " 、" + v);
+            });
+        });
+    }
+    public static void showMore(Map<String, Map<String, String>> map){
         map.keySet().forEach(k->{
             System.out.println(k + " 的分词结果：");
             AtomicInteger i = new AtomicInteger();
-            map.get(k).forEach(v->{
-                System.out.println("\t" + i.incrementAndGet() + "、" + v);
+            map.get(k).keySet().forEach(a -> {
+                System.out.println("\t" + i.incrementAndGet()+ " 、【"   + a + "】\t" + map.get(k).get(a));
             });
         });
     }
     public static void main(String[] args) {
-        Map<String, Set<String>> map = contrast("杨尚川是APDPlat应用级产品开发平台的作者");
-        show(map);
+        show(contrast("杨尚川是APDPlat应用级产品开发平台的作者"));
+        showMore(contrastMore("杨尚川是APDPlat应用级产品开发平台的作者"));
     }
 }
