@@ -21,10 +21,7 @@
 package org.apdplat.evaluation.impl;
 
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import net.paoding.analysis.analyzer.PaodingAnalyzer;
 import org.apache.lucene.analysis.Token;
@@ -39,6 +36,7 @@ import org.apdplat.evaluation.WordSegmenter;
  * @author 杨尚川
  */
 public class PaodingEvaluation extends Evaluation implements WordSegmenter{
+    private static final PaodingAnalyzer ANALYZER = new PaodingAnalyzer();
     @Override
     public List<EvaluationResult> run() throws Exception {
         List<EvaluationResult> list = new ArrayList<>();
@@ -53,16 +51,14 @@ public class PaodingEvaluation extends Evaluation implements WordSegmenter{
         
         return list;
     }
-    private EvaluationResult run(final int mode) throws Exception{
-        final PaodingAnalyzer analyzer = new PaodingAnalyzer();
-        analyzer.setMode(mode);
+    private EvaluationResult run(int mode) throws Exception{
         String type = PaodingAnalyzer.MAX_WORD_LENGTH_MODE == mode ? "MAX_WORD_LENGTH_MODE" : "MOST_WORDS_MODE";
         // 对文本进行分词
         String resultText = "temp/result-text-"+type+".txt";
         float rate = segFile(testText, resultText, new Segmenter(){
             @Override
             public String seg(String text) {
-                return PaodingEvaluation.seg(text, analyzer);               
+                return PaodingEvaluation.seg(text, mode);
             }
         });
         // 对分词结果进行评估
@@ -72,23 +68,20 @@ public class PaodingEvaluation extends Evaluation implements WordSegmenter{
         return result;
     }
     @Override
-    public Set<String> seg(String text) {
-        Set<String> set = new HashSet<>();
+    public Map<String, String> segMore(String text) {
+        Map<String, String> map = new HashMap<>();
+
+        map.put("MOST_WORDS_MODE", seg(text, PaodingAnalyzer.MOST_WORDS_MODE));
+        map.put("MAX_WORD_LENGTH_MODE", seg(text, PaodingAnalyzer.MAX_WORD_LENGTH_MODE));
         
-        PaodingAnalyzer analyzer = new PaodingAnalyzer();
-        analyzer.setMode(PaodingAnalyzer.MOST_WORDS_MODE);
-        set.add(seg(text, analyzer));
-        
-        analyzer.setMode(PaodingAnalyzer.MAX_WORD_LENGTH_MODE);
-        set.add(seg(text, analyzer));
-        
-        return set;
+        return map;
     }
-    private static String seg(String text, PaodingAnalyzer analyzer){
+    private static String seg(String text, int mode){
+        ANALYZER.setMode(mode);
         StringBuilder result = new StringBuilder();
         try {
             Token reusableToken = new Token();
-            TokenStream stream = analyzer.tokenStream("", new StringReader(text));                
+            TokenStream stream = ANALYZER.tokenStream("", new StringReader(text));
             Token token = null;
             while((token = stream.next(reusableToken)) != null){
                 result.append(token.term()).append(" ");
