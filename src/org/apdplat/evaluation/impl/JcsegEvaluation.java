@@ -40,11 +40,10 @@ import org.lionsoul.jcseg.core.SegmentFactory;
  */
 public class JcsegEvaluation extends Evaluation implements WordSegmenter{
     private static final JcsegTaskConfig CONFIG = new JcsegTaskConfig();
-    private static final ADictionary DIC = DictionaryFactory.createDefaultDictionary();
+    private static final ADictionary DIC = DictionaryFactory.createDefaultDictionary(CONFIG);
     static {
         CONFIG.setLoadCJKSyn(false);
         CONFIG.setLoadCJKPinyin(false);
-        DIC.setConfig(CONFIG);
     }
     @Override
     public List<EvaluationResult> run() throws Exception {
