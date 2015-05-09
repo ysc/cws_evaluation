@@ -6,16 +6,15 @@
 
 
 
-   如何建立开发环境？
-
-   直接使用Eclipse、MyEclipse、Netbeans、IDEA打开项目即可
+   如何建立开发环境？直接使用Eclipse、MyEclipse、Netbeans、IDEA打开项目即可
 
    评估采用的测试文本有253 3709行，共2837 4490个字符
    
    运行org.apdplat.evaluation.Evaluator类可获得评估结果
    
-   [可运行程序下载](http://pan.baidu.com/s/1jGwq682)
+   运行org.apdplat.evaluation.WordSegmenter类可对比不同分词器结果
    
+   [可运行程序下载](http://pan.baidu.com/s/1jGwq682)
    
    windows:
    
