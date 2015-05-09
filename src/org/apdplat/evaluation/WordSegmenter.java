@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * 获取文本的所有分词结果, 对比不同分词器结果
@@ -41,7 +42,9 @@ public interface WordSegmenter {
      * @param text 文本
      * @return 所有的分词结果，去除重复
      */
-    public Set<String> seg(String text);
+    default public Set<String> seg(String text) {
+        return segMore(text).values().stream().collect(Collectors.toSet());
+    }
     /**
      * 获取文本的所有分词结果
      * @param text 文本
