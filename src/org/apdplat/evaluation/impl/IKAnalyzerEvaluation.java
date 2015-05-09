@@ -22,10 +22,7 @@ package org.apdplat.evaluation.impl;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.apdplat.evaluation.Evaluation;
 import org.apdplat.evaluation.EvaluationResult;
@@ -68,9 +65,18 @@ public class IKAnalyzerEvaluation extends Evaluation implements WordSegmenter{
         });
         // 对分词结果进行评估
         EvaluationResult result = evaluate(resultText, standardText);
-        result.setAnalyzer("IKAnalyzer "+des);
+        result.setAnalyzer("IKAnalyzer " + des);
         result.setSegSpeed(rate);
         return result;
+    }
+    @Override
+    public Map<String, String> segMore(String text) {
+        Map<String, String> map = new HashMap<>();
+
+        map.put("智能切分", segText(text, true));
+        map.put("细粒度切分", segText(text, false));
+
+        return map;
     }
     private String segText(String text, boolean useSmart) {
         StringBuilder result = new StringBuilder();
@@ -84,15 +90,6 @@ public class IKAnalyzerEvaluation extends Evaluation implements WordSegmenter{
             throw new RuntimeException(ex);
         }
         return result.toString();
-    }
-    @Override
-    public Set<String> seg(String text) {
-        Set<String> set = new HashSet<>();
-        
-        set.add(segText(text, true));
-        set.add(segText(text, false));
-        
-        return set;
     }
     public static void main(String[] args) throws Exception{
         new IKAnalyzerEvaluation().run();
