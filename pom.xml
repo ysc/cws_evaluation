@@ -156,7 +156,7 @@
         <stanford.version>3.3.1</stanford.version>
         <jieba.version>0.0.2</jieba.version>
         <mmseg4j.version>1.9.1</mmseg4j.version>
-        <lucene.version>2.4.1</lucene.version>
+        <lucene.version>5.1.0</lucene.version>
         <fudannlp.path>${basedir}/lib/fudannlp.jar</fudannlp.path>
         <jcseg.path>${basedir}/lib/jcseg-core-1.9.2.jar</jcseg.path>
         <ik.path>${basedir}/lib/IKAnalyzer2012_u6.jar</ik.path>
@@ -251,6 +251,13 @@
             <scope>system</scope>
             <systemPath>${paoding.path}</systemPath>
         </dependency>
+        <!-- smartcn分词器 -->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-analyzers-smartcn</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <!-- smartcn分词器 需要lucene依赖 且和lucene版本同步 -->
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
