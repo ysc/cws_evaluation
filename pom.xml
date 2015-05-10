@@ -90,25 +90,11 @@
                     <debug>true</debug>
                 </configuration>
             </plugin>
-            <!-- 打包插件，排除程序生成的文件 -->
+            <!-- 打包插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>${maven-jar-plugin.version}</version>
-                <configuration>
-                    <excludes>
-                        <exclude>**/lib/stanford-segmenter-3.3.1/data/ctb.gz</exclude>
-                        <exclude>**/lib/stanford-segmenter-3.3.1/data/pku.gz</exclude>
-                        <exclude>**/lib/paoding-analysis-2.0.4-beta-dic/.compiled/**</exclude>
-                        <exclude>**/temp/**</exclude>
-                        <exclude>**/report/**</exclude>
-                        <exclude>**/build/**</exclude>
-                        <exclude>**/out/**</exclude>
-                        <exclude>**/bin/**</exclude>
-                        <exclude>**/dist/**</exclude>
-                        <exclude>**/logs/**</exclude>
-                    </excludes>
-                </configuration>
             </plugin>
             <!-- 单元测试插件 -->
             <plugin>
