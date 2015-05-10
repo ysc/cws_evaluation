@@ -1,0 +1,274 @@
+<!--
+  ~ APDPlat - Application Product Development Platform
+  ~ Copyright (c) 2013, 杨尚川, yang-shangchuan@qq.com
+  ~
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.apdplat</groupId>
+    <artifactId>cws_evaluation</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+
+    <name>cws_evaluation</name>
+    <url>https://github.com/ysc/cws_evaluation</url>
+    <description>
+        中文分词器分词效果评估
+    </description>
+    <organization>
+        <name>APDPlat</name>
+        <url>http://apdplat.org/</url>
+    </organization>
+    <licenses>
+        <license>
+            <name>GNU GENERAL PUBLIC LICENSE, Version 3</name>
+            <url>http://www.gnu.org/licenses/gpl.html</url>
+        </license>
+    </licenses>
+    <inceptionYear>2014</inceptionYear>
+    <scm>
+        <url>https://github.com/ysc/cws_evaluation</url>
+        <connection>scm:git:git://github.com/ysc/cws_evaluation.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/ysc/cws_evaluation.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+    <developers>
+        <developer>
+            <name>杨尚川</name>
+            <email>ysc@apdplat.org</email>
+            <url>http://yangshangchuan.iteye.com</url>
+        </developer>
+    </developers>
+
+    <repositories>
+        <repository>
+            <id>mvn-repo</id>
+            <url>http://maven.ansj.org/</url>
+        </repository>
+    </repositories>
+
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>src</directory>
+            </resource>
+        </resources>
+        <testOutputDirectory>test</testOutputDirectory>
+        <testResources>
+            <testResource>
+                <directory>test</directory>
+            </testResource>
+        </testResources>
+        <plugins>
+            <!-- 编译插件, 设定JDK版本 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
+                    <debug>true</debug>
+                </configuration>
+            </plugin>
+            <!-- 打包插件，排除程序生成的文件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin.version}</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/lib/stanford-segmenter-3.3.1/data/ctb.gz</exclude>
+                        <exclude>**/lib/stanford-segmenter-3.3.1/data/pku.gz</exclude>
+                        <exclude>**/lib/paoding-analysis-2.0.4-beta-dic/.compiled/**</exclude>
+                        <exclude>**/temp/**</exclude>
+                        <exclude>**/report/**</exclude>
+                        <exclude>**/build/**</exclude>
+                        <exclude>**/out/**</exclude>
+                        <exclude>**/bin/**</exclude>
+                        <exclude>**/dist/**</exclude>
+                        <exclude>**/logs/**</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <!-- 单元测试插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <testFailureIgnore>true</testFailureIgnore>
+                </configuration>
+            </plugin>
+            <!-- resource插件, 设定编码 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <!-- source插件,打包源码 -->
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--  运行 mvn sonar:sonar 可将项目发布给质量管理平台-->
+            <!-- 软件环境： jdk1.7.0_51 apache-maven-3.0.4 sonar-3.6 -->
+            <plugin>
+                <groupId>org.codehaus.sonar</groupId>
+                <artifactId>sonar-maven3-plugin</artifactId>
+                <version>${sonar-maven3-plugin.version}</version>
+            </plugin>
+        </plugins>
+    </build>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
+        <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
+        <maven-surefire-plugin.version>2.14</maven-surefire-plugin.version>
+        <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
+        <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
+        <sonar-maven3-plugin.version>3.5</sonar-maven3-plugin.version>
+
+        <junit.version>4.11</junit.version>
+        <slf4j-api.version>1.6.4</slf4j-api.version>
+        <logback-classic.version>0.9.28</logback-classic.version>
+        <word.version>1.2</word.version>
+        <ansj.version>1.4</ansj.version>
+        <stanford.version>3.3.1</stanford.version>
+        <jieba.version>0.0.2</jieba.version>
+        <mmseg4j.version>1.9.1</mmseg4j.version>
+        <lucene.version>2.4.1</lucene.version>
+        <fudannlp.path>${basedir}/lib/fudannlp.jar</fudannlp.path>
+        <jcseg.path>${basedir}/lib/jcseg-core-1.9.2.jar</jcseg.path>
+        <ik.path>${basedir}/lib/IKAnalyzer2012_u6.jar</ik.path>
+        <paoding.path>${basedir}/lib/paoding-analysis-2.0.4-beta.jar</paoding.path>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- SLF4J日志框架API -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-api.version}</version>
+        </dependency>
+        <!-- LOGBACK日志实现提供者 -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback-classic.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- word分词器 -->
+        <dependency>
+            <groupId>org.apdplat</groupId>
+            <artifactId>word</artifactId>
+            <version>${word.version}</version>
+        </dependency>
+        <!-- ansj分词器 -->
+        <dependency>
+            <groupId>org.ansj</groupId>
+            <artifactId>ansj_seg</artifactId>
+            <version>${ansj.version}</version>
+        </dependency>
+        <!-- stanford分词器 -->
+        <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <version>${stanford.version}</version>
+        </dependency>
+        <!-- fudannlp分词器 -->
+        <dependency>
+            <groupId>fudan</groupId>
+            <artifactId>fudannlp</artifactId>
+            <scope>system</scope>
+            <version>unknown</version>
+            <systemPath>${fudannlp.path}</systemPath>
+        </dependency>
+        <!-- jieba分词器 -->
+        <dependency>
+            <groupId>com.huaban</groupId>
+            <artifactId>jieba-analysis</artifactId>
+            <version>${jieba.version}</version>
+        </dependency>
+        <!-- jcseg分词器 -->
+        <dependency>
+            <groupId>jcseg</groupId>
+            <artifactId>jcseg-core</artifactId>
+            <version>1.9.2</version>
+            <scope>system</scope>
+            <systemPath>${jcseg.path}</systemPath>
+        </dependency>
+        <!-- mmseg4j分词器 -->
+        <dependency>
+            <groupId>com.chenlb.mmseg4j</groupId>
+            <artifactId>mmseg4j-core</artifactId>
+            <version>${mmseg4j.version}</version>
+        </dependency>
+        <!-- ik-analyzer分词器 -->
+        <dependency>
+            <groupId>ik</groupId>
+            <artifactId>IKAnalyzer</artifactId>
+            <version>2012_u6</version>
+            <scope>system</scope>
+            <systemPath>${ik.path}</systemPath>
+        </dependency>
+        <!-- paoding分词器 -->
+        <dependency>
+            <groupId>paoding</groupId>
+            <artifactId>paoding-analysis</artifactId>
+            <version>2.0.4-beta</version>
+            <scope>system</scope>
+            <systemPath>${paoding.path}</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+    </dependencies>
+</project>
