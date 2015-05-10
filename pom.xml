@@ -57,6 +57,10 @@
 
     <repositories>
         <repository>
+            <id>lib_id</id>
+            <url>file://${project.basedir}/lib</url>
+        </repository>
+        <repository>
             <id>mvn-repo</id>
             <url>http://maven.ansj.org/</url>
         </repository>
@@ -156,11 +160,7 @@
         <stanford.version>3.3.1</stanford.version>
         <jieba.version>0.0.2</jieba.version>
         <mmseg4j.version>1.9.1</mmseg4j.version>
-        <lucene.version>5.1.0</lucene.version>
-        <fudannlp.path>${basedir}/lib/fudannlp.jar</fudannlp.path>
-        <jcseg.path>${basedir}/lib/jcseg-core-1.9.2.jar</jcseg.path>
-        <ik.path>${basedir}/lib/IKAnalyzer2012_u6.jar</ik.path>
-        <paoding.path>${basedir}/lib/paoding-analysis-2.0.4-beta.jar</paoding.path>
+        <smartcn.version>5.1.0</smartcn.version>
     </properties>
 
     <dependencies>
@@ -211,9 +211,13 @@
         <dependency>
             <groupId>fudan</groupId>
             <artifactId>fudannlp</artifactId>
-            <scope>system</scope>
-            <version>unknown</version>
-            <systemPath>${fudannlp.path}</systemPath>
+            <version>1.6.1</version>
+        </dependency>
+        <!-- fudannlp分词器 依赖  trove4j-->
+        <dependency>
+            <groupId>net.sf.trove4j</groupId>
+            <artifactId>trove4j</artifactId>
+            <version>3.0.3</version>
         </dependency>
         <!-- jieba分词器 -->
         <dependency>
@@ -226,8 +230,6 @@
             <groupId>jcseg</groupId>
             <artifactId>jcseg-core</artifactId>
             <version>1.9.2</version>
-            <scope>system</scope>
-            <systemPath>${jcseg.path}</systemPath>
         </dependency>
         <!-- mmseg4j分词器 -->
         <dependency>
@@ -240,28 +242,18 @@
             <groupId>ik</groupId>
             <artifactId>IKAnalyzer</artifactId>
             <version>2012_u6</version>
-            <scope>system</scope>
-            <systemPath>${ik.path}</systemPath>
-        </dependency>
-        <!-- paoding分词器 -->
-        <dependency>
-            <groupId>paoding</groupId>
-            <artifactId>paoding-analysis</artifactId>
-            <version>2.0.4-beta</version>
-            <scope>system</scope>
-            <systemPath>${paoding.path}</systemPath>
         </dependency>
         <!-- smartcn分词器 -->
         <dependency>
             <groupId>org.apache.lucene</groupId>
-                <artifactId>lucene-analyzers-smartcn</artifactId>
-            <version>${lucene.version}</version>
+            <artifactId>lucene-analyzers-smartcn</artifactId>
+            <version>${smartcn.version}</version>
         </dependency>
         <!-- smartcn分词器 需要lucene依赖 且和lucene版本同步 -->
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
-            <version>${lucene.version}</version>
+            <version>${smartcn.version}</version>
         </dependency>
     </dependencies>
 </project>
