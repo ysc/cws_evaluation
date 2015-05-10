@@ -7,6 +7,8 @@
 
 
    如何建立开发环境？直接使用Eclipse、MyEclipse、Netbeans、IDEA打开项目即可
+   
+   为什么不用maven构建项目？因为有些分词器的JAR没有放到Maven Repository
 
    评估采用的测试文本有253 3709行，共2837 4490个字符
    
