@@ -22,7 +22,6 @@ package org.apdplat.evaluation;
 
 import org.apdplat.evaluation.impl.*;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -58,12 +57,12 @@ public interface WordSegmenter {
         map.put("word分词器", new WordEvaluation().seg(text));
         map.put("Stanford分词器", new StanfordEvaluation().seg(text));
         map.put("Ansj分词器", new AnsjEvaluation().seg(text));
+        map.put("smartcn分词器", new SmartCNEvaluation().seg(text));
         map.put("FudanNLP分词器", new FudanNLPEvaluation().seg(text));
         map.put("Jieba分词器", new JiebaEvaluation().seg(text));
         map.put("Jcseg分词器", new JcsegEvaluation().seg(text));
         map.put("MMSeg4j分词器", new MMSeg4jEvaluation().seg(text));
         map.put("IKAnalyzer分词器", new IKAnalyzerEvaluation().seg(text));
-        map.put("Paoding分词器", new PaodingEvaluation().seg(text));
         return map;
     }
     public static Map<String, Map<String, String>> contrastMore(String text){
@@ -71,12 +70,12 @@ public interface WordSegmenter {
         map.put("word分词器", new WordEvaluation().segMore(text));
         map.put("Stanford分词器", new StanfordEvaluation().segMore(text));
         map.put("Ansj分词器", new AnsjEvaluation().segMore(text));
+        map.put("smartcn分词器", new SmartCNEvaluation().segMore(text));
         map.put("FudanNLP分词器", new FudanNLPEvaluation().segMore(text));
         map.put("Jieba分词器", new JiebaEvaluation().segMore(text));
         map.put("Jcseg分词器", new JcsegEvaluation().segMore(text));
         map.put("MMSeg4j分词器", new MMSeg4jEvaluation().segMore(text));
         map.put("IKAnalyzer分词器", new IKAnalyzerEvaluation().segMore(text));
-        map.put("Paoding分词器", new PaodingEvaluation().segMore(text));
         return map;
     }
     public static void show(Map<String, Set<String>> map){
