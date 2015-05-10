@@ -22,6 +22,10 @@ package org.apdplat.evaluation;
 
 import org.apdplat.evaluation.impl.*;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -96,8 +100,40 @@ public interface WordSegmenter {
             });
         });
     }
+    public static void run(String encoding) {
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, encoding))){
+            String line = null;
+            while((line = reader.readLine()) != null){
+                if("exit".equals(line)){
+                    System.exit(0);
+                    return;
+                }
+                if(line.trim().equals("")){
+                    continue;
+                }
+                System.out.println("********************************************");
+                show(contrast(line));
+                System.out.println("********************************************");
+                showMore(contrastMore(line));
+                System.out.println("********************************************");
+                showUsage();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    public static void showUsage(){
+        System.out.println("输入exit退出程序");
+        System.out.println("输入要分词的文本后回车确认：");
+    }
     public static void main(String[] args) {
-        show(contrast("杨尚川是APDPlat应用级产品开发平台的作者"));
-        showMore(contrastMore("杨尚川是APDPlat应用级产品开发平台的作者"));
+        String encoding = "utf-8";
+        if(args==null || args.length == 0){
+            showUsage();
+            run(encoding);
+        }else if(Charset.isSupported(args[0])){
+            showUsage();
+            run(args[0]);
+        }
     }
 }
