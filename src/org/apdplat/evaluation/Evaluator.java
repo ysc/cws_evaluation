@@ -23,11 +23,7 @@ package org.apdplat.evaluation;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -38,23 +34,17 @@ import java.util.jar.JarFile;
 public class Evaluator {
     public static void main(String[] args) throws Exception{
         long start = System.currentTimeMillis();
-        File jarFile = new File("cws_evaluation.jar");
-        List<Class> classes = new ArrayList<>();
-        if(jarFile.exists()){
-            classes.addAll(processJar(jarFile));
-        }else{
-            classes.addAll(processDir());
-        }
         //可通过命令行参数指定不评估的分词器
-        Iterator<Class> iter = classes.iterator();
+        Set<String> excludes = new HashSet<>();
         for(String exclude : args){
-            while(iter.hasNext()){
-                Class clazz = iter.next();
-                if(clazz.getSimpleName().startsWith(exclude)){
-                    iter.remove();
-                    System.out.println("不评估："+clazz.getSimpleName());
-                }
-            }
+            excludes.add(exclude);
+            System.out.println("不评估：" + exclude);
+        }
+        List<Class> classes = new ArrayList<>();
+        if(args.length>0 && new File(args[0]).exists()){
+            classes.addAll(processJar(new File(args[0]), excludes));
+        }else{
+            classes.addAll(processDir(excludes));
         }
         Collections.reverse(classes);
         System.out.println("需要评估的分词器：");
@@ -78,12 +68,17 @@ public class Evaluator {
      * @throws IOException
      * @throws ClassNotFoundException 
      */
-    private static List<Class> processJar(File jarFile) throws IOException, ClassNotFoundException {
+    private static List<Class> processJar(File jarFile, Set<String> excludes) throws IOException, ClassNotFoundException {
         List<Class> list = new ArrayList<>();
         JarFile jarfile = new JarFile(jarFile);        
         Enumeration files = jarfile.entries();
-        while(files.hasMoreElements()){   
-            JarEntry entry = (JarEntry)files.nextElement();  
+        o:while(files.hasMoreElements()){
+            JarEntry entry = (JarEntry)files.nextElement();
+            for(String exclude : excludes){
+                if(entry.getName().contains(exclude)){
+                    continue o;
+                }
+            }
             if(entry.getName().startsWith("org/apdplat/evaluation/impl")
                     && entry.getName().endsWith(".class")){
                 String cls = entry.getName().replaceAll("/", ".");
@@ -101,12 +96,20 @@ public class Evaluator {
      * @return
      * @throws ClassNotFoundException 
      */
-    private static List<Class> processDir() throws ClassNotFoundException {
+    private static List<Class> processDir(Set<String> excludes) throws ClassNotFoundException {
         List<Class> list = new ArrayList<>();
         URL url = Evaluator.class.getClassLoader().getResource("org/apdplat/evaluation/Evaluator.class");
         File dir = new File(url.getFile().replace("Evaluator.class", ""), "impl");
-        for(File file : dir.listFiles()){
+        o:for(File file : dir.listFiles()){
             String cls = file.getPath();
+            if(cls.endsWith(".java")){
+                continue ;
+            }
+            for(String exclude : excludes){
+                if(cls.contains(exclude)){
+                    continue o;
+                }
+            }
             int index = cls.indexOf("org\\apdplat\\evaluation\\impl\\");
             if(index == -1){
                 index = cls.indexOf("org/apdplat/evaluation/impl/");
