@@ -6,7 +6,7 @@
 
 
 
-   如何建立开发环境？直接使用Eclipse、MyEclipse、Netbeans、IDEA打开项目即可
+   如何建立开发环境？如果是使用Eclipse、MyEclipse要执行导入操作，如果是使用Netbeans、IDEA则直接打开项目既可
 
    评估采用的测试文本有253 3709行，共2837 4490个字符
    
@@ -50,7 +50,7 @@
    
    [6、fudannlp分词器](https://code.google.com/p/fudannlp/)
    
-   [7、paoding分词器](https://code.google.com/p/paoding/)
+   [7、smartcn分词器](http://lucene.apache.org/core/5_1_0/analyzers-smartcn/org/apache/lucene/analysis/cn/smart/SmartChineseAnalyzer.html)
    
    [8、jieba分词器](https://github.com/huaban/jieba-analysis)
    
