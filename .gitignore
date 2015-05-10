@@ -4,7 +4,7 @@ build/
 lib/stanford-segmenter-3.3.1/data/ctb.gz
 lib/stanford-segmenter-3.3.1/data/pku.gz
 lib/paoding-analysis-2.0.4-beta-dic/.compiled/
-manifest.mf
+target/
 nbproject/
 temp/
 .settings/
