@@ -207,6 +207,12 @@
             <artifactId>stanford-corenlp</artifactId>
             <version>${stanford.version}</version>
         </dependency>
+        <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <version>${stanford.version}</version>
+            <classifier>models-chinese</classifier>
+        </dependency>
         <!-- fudannlp分词器 -->
         <dependency>
             <groupId>fudan</groupId>
