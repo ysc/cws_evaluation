@@ -156,7 +156,7 @@
         <slf4j-api.version>1.6.4</slf4j-api.version>
         <logback-classic.version>0.9.28</logback-classic.version>
         <word.version>1.2</word.version>
-        <ansj.version>1.4</ansj.version>
+        <ansj.version>2.0.8</ansj.version>
         <stanford.version>3.3.1</stanford.version>
         <jieba.version>0.0.2</jieba.version>
         <mmseg4j.version>1.9.1</mmseg4j.version>
