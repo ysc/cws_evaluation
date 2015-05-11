@@ -159,7 +159,7 @@
         <ansj.version>2.0.8</ansj.version>
         <stanford.version>3.3.1</stanford.version>
         <jieba.version>1.0.0</jieba.version>
-        <mmseg4j.version>1.9.1</mmseg4j.version>
+        <mmseg4j.version>1.10.0</mmseg4j.version>
         <smartcn.version>5.1.0</smartcn.version>
     </properties>
 
