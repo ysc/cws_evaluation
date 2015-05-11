@@ -52,17 +52,12 @@ public class JiebaEvaluation extends Evaluation implements WordSegmenter{
         return list;
     }
     private EvaluationResult run(final SegMode segMode) throws Exception{
-        final JiebaSegmenter segmenter = new JiebaSegmenter();
         // 对文本进行分词
         String resultText = "temp/result-text-"+segMode+".txt";
         float rate = segFile(testText, resultText, new Segmenter(){
             @Override
             public String seg(String text) {
-                StringBuilder result = new StringBuilder();                
-                for(SegToken token : segmenter.process(text, segMode)){
-                    result.append(token.token).append(" ");
-                }
-                return result.toString();                
+                return JiebaEvaluation.seg(text, segMode);
             }
         });
         // 对分词结果进行评估
@@ -74,16 +69,16 @@ public class JiebaEvaluation extends Evaluation implements WordSegmenter{
     @Override
     public Map<String, String> segMore(String text) {
         Map<String, String> map = new HashMap<>();
-        map.put("INDEX", seg(text, JIEBA_SEGMENTER, SegMode.INDEX));
-        map.put("SEARCH", seg(text, JIEBA_SEGMENTER, SegMode.SEARCH));
+        map.put("INDEX", seg(text, SegMode.INDEX));
+        map.put("SEARCH", seg(text, SegMode.SEARCH));
         return map;
     }
-    public String seg(String text, JiebaSegmenter segmenter, SegMode segMode) {
-        StringBuilder result = new StringBuilder();                
-        for(SegToken token : segmenter.process(text, segMode)){
-            result.append(token.token).append(" ");
+    private static String seg(String text, SegMode segMode) {
+        StringBuilder result = new StringBuilder();
+        for(SegToken token : JIEBA_SEGMENTER.process(text, segMode)){
+            result.append(token.word.getToken()).append(" ");
         }
-        return result.toString(); 
+        return result.toString();
     }
     public static void main(String[] args) throws Exception{
         new JiebaEvaluation().run();
