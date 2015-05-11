@@ -3,7 +3,6 @@ build.xml
 build/
 lib/stanford-corenlp-3.5.2-models-chinese/edu/stanford/nlp/models/segmenter/chinese/pku.gz
 lib/stanford-corenlp-3.5.2-models-chinese/edu/stanford/nlp/models/segmenter/chinese/ctb.gz
-lib/paoding-analysis-2.0.4-beta-dic/.compiled/
 target/
 nbproject/
 temp/
