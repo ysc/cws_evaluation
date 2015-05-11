@@ -42,8 +42,8 @@ public class StanfordEvaluation extends Evaluation implements WordSegmenter{
     private static CRFClassifier<CoreLabel> ctbCRFClassifier = null;
     static{
         try{
-            String pku = "lib/stanford-segmenter-3.3.1/data/pku.gz";
-            String ctb = "lib/stanford-segmenter-3.3.1/data/ctb.gz";
+            String pku = "lib/stanford-corenlp-3.5.2-models-chinese/edu/stanford/nlp/models/segmenter/chinese/pku.gz";
+            String ctb = "lib/stanford-corenlp-3.5.2-models-chinese/edu/stanford/nlp/models/segmenter/chinese/ctb.gz";
             //github单文件最大不能超过100m，所以分割文件存放，使用时再合并
             //split(pku, 2);
             //split(ctb, 2);
@@ -61,16 +61,16 @@ public class StanfordEvaluation extends Evaluation implements WordSegmenter{
     }
     private static CRFClassifier<CoreLabel> getCRFClassifier(String lang){
         Properties props = new Properties();
-        props.setProperty("sighanCorporaDict", "lib/stanford-segmenter-3.3.1/data");
-        props.setProperty("NormalizationTable", "lib/stanford-segmenter-3.3.1/data/norm.simp.utf8");
+        props.setProperty("sighanCorporaDict", "lib/stanford-corenlp-3.5.2-models-chinese/edu/stanford/nlp/models/segmenter/chinese/");
+        props.setProperty("NormalizationTable", "lib/stanford-corenlp-3.5.2-models-chinese/edu/stanford/nlp/models/segmenter/chinese/norm.simp.utf8");
         props.setProperty("normTableEncoding", "UTF-8");
         // below is needed because CTBSegDocumentIteratorFactory accesses it
-        props.setProperty("serDictionary","lib/stanford-segmenter-3.3.1/data/dict-chris6.ser.gz");
+        props.setProperty("serDictionary","lib/stanford-corenlp-3.5.2-models-chinese/edu/stanford/nlp/models/segmenter/chinese/dict-chris6.ser.gz");
         props.setProperty("inputEncoding", "UTF-8");
         props.setProperty("sighanPostProcessing", "true");
 
         final CRFClassifier<CoreLabel> segmenter = new CRFClassifier<>(props);
-        segmenter.loadClassifierNoExceptions("lib/stanford-segmenter-3.3.1/data/"+lang+".gz", props);
+        segmenter.loadClassifierNoExceptions("lib/stanford-corenlp-3.5.2-models-chinese/edu/stanford/nlp/models/segmenter/chinese/"+lang+".gz", props);
         return segmenter;
     }
     @Override

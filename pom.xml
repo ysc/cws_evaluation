@@ -157,7 +157,7 @@
         <logback-classic.version>0.9.28</logback-classic.version>
         <word.version>1.2</word.version>
         <ansj.version>2.0.8</ansj.version>
-        <stanford.version>3.3.1</stanford.version>
+        <stanford.version>3.5.2</stanford.version>
         <jieba.version>1.0.0</jieba.version>
         <mmseg4j.version>1.10.0</mmseg4j.version>
         <smartcn.version>5.1.0</smartcn.version>
