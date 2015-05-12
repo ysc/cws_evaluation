@@ -6,33 +6,57 @@
 
 
 
-   如何建立开发环境？如果是使用Eclipse、MyEclipse要执行导入操作，如果是使用Netbeans、IDEA则直接打开项目既可
+   如何建立开发环境？
+   
+	如果是使用Netbeans、IDEA，则直接打开项目
+	如果是使用Eclipse、MyEclipse，则要执行导入操作
+	推荐使用IDEA
 
-   评估采用的测试文本有253 3709行，共2837 4490个字符
+   评估采用的测试文本位于data目录下，253 3709行，共2837 4490个字符
+   test-test.txt为未分词的文件，一行一个句子或短语，格式如下：
+   
+	   迈向充满希望的新世纪
+	   一九九八年新年讲话
+	   附图片1张
+	   中共中央总书记
+	   国家主席江泽民
+	   一九九七年十二月三十一日
+	   12月31日
+	   总书记
+	   国家主席江泽民发表1998年新年讲话
+	   新华社记者兰红光摄
+	   
+   standard-text.txt为人工分好词的文件，用于判断参与评估的分词器的分词结果是否正确，词和词之间以空格分隔，格式如下：
+   
+	   迈向 充满 希望 的 新 世纪
+	   一九九八年 新年 讲话
+	   附 图片 1 张
+	   中共中央 总书记
+	   国家 主席 江泽民
+	   一九九七年 十二月 三十一日
+	   12月 31日
+	   总书记
+	   国家 主席 江泽民 发表 1998年 新年 讲话
+	   新华社 记者 兰红光 摄
    
    注意：由于每个分词器的词典格式不一致，除了词典之外使用的其他模型的格式也不一致，所以我们评估对比时没有让所有分词器使用统一的词典和模型，测试的是各个分词器的默认行为
    
    运行org.apdplat.evaluation.Evaluator类可获得评估结果
-   
    运行org.apdplat.evaluation.WordSegmenter类可对比不同分词器结果
-   
-   stanford分词器是吃内存的怪兽，运行的时候增加虚拟机参数 -Xms3000m -Xmx3000m
-   
-   [可运行程序下载](http://pan.baidu.com/s/1jGwq682)
    
    windows:
    
-   ./cws_evaluation.bat
+   ./contrast.bat
+   ./evaluation.bat
 
    linux:
    
-   chmod +x cws_evaluation.sh
-   
-   ./cws_evaluation.sh
+   chmod +x contrast.sh & ./contrast.sh
+   chmod +x evaluation.sh & ./evaluation.sh
 
-   最终评估结果文件位于当前目录下：分词效果评估报告.txt
+   最终评估结果文件位于report目录下：分词效果评估报告.txt
 
-   注意：Stanford分词非常耗费内存，速度也比较慢，耐心等待
+   注意：stanford分词器是吃内存的怪兽，运行的时候需要增加虚拟机参数 -Xms3000m -Xmx3000m
    
 	
 	
