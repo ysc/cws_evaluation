@@ -247,7 +247,7 @@
         <dependency>
             <groupId>ik</groupId>
             <artifactId>IKAnalyzer</artifactId>
-            <version>2012_u6</version>
+            <version>2012FF_u1</version>
         </dependency>
         <!-- smartcn分词器 -->
         <dependency>
