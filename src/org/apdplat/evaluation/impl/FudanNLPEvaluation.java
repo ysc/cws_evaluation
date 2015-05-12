@@ -37,7 +37,7 @@ public class FudanNLPEvaluation extends Evaluation implements WordSegmenter{
     private static CWSTagger tagger = null;
     static{
         try{
-            tagger = new CWSTagger("lib/fudannlp_seg.m");
+            tagger = new CWSTagger("lib/fudan/fudannlp/1.6.1/fudannlp_seg.m");
             tagger.setEnFilter(true);
         }catch(Exception e){
             e.printStackTrace();
