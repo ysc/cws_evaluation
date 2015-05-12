@@ -1,4 +1,4 @@
-## 中文分词器分词效果评估程序
+## 中文分词器分词效果评估对比
 
 
 
@@ -13,6 +13,7 @@
 	推荐使用IDEA
 
    评估采用的测试文本位于data目录下，253 3709行，共2837 4490个字符
+   
    test-test.txt为未分词的文件，一行一个句子或短语，格式如下：
    
 	   迈向充满希望的新世纪
@@ -42,45 +43,22 @@
    注意：由于每个分词器的词典格式不一致，除了词典之外使用的其他模型的格式也不一致，所以我们评估对比时没有让所有分词器使用统一的词典和模型，测试的是各个分词器的默认行为
    
    运行org.apdplat.evaluation.Evaluator类可获得评估结果
+   
    运行org.apdplat.evaluation.WordSegmenter类可对比不同分词器结果
    
    windows:
    
-   ./contrast.bat
-   ./evaluation.bat
+	   ./contrast.bat
+	   ./evaluation.bat
 
    linux:
    
-   chmod +x contrast.sh & ./contrast.sh
-   chmod +x evaluation.sh & ./evaluation.sh
+	   chmod +x contrast.sh & ./contrast.sh
+	   chmod +x evaluation.sh & ./evaluation.sh
 
    最终评估结果文件位于report目录下：分词效果评估报告.txt
 
    注意：stanford分词器是吃内存的怪兽，运行的时候需要增加虚拟机参数 -Xms3000m -Xmx3000m
-   
-	
-	
-### 支持的分词器有：
-
-
-    
-   [1、word分词器](https://github.com/ysc/word)
-    
-   [2、ansj分词器](https://github.com/ansjsun/ansj_seg)
-    
-   [3、mmseg4j分词器](http://code.google.com/p/mmseg4j/)
-   
-   [4、ik-analyzer分词器](http://code.google.com/p/ik-analyzer/)
-   
-   [5、jcseg分词器](https://code.google.com/p/jcseg/)
-   
-   [6、fudannlp分词器](https://code.google.com/p/fudannlp/)
-   
-   [7、smartcn分词器](http://lucene.apache.org/core/5_1_0/analyzers-smartcn/org/apache/lucene/analysis/cn/smart/SmartChineseAnalyzer.html)
-   
-   [8、jieba分词器](https://github.com/huaban/jieba-analysis)
-   
-   [9、stanford分词器](http://nlp.stanford.edu/software/segmenter.shtml)
       
 	
 	
@@ -134,9 +112,9 @@
 	字数完美率：41.54% 字数错误率：58.45% 总的字数：28374490 完美字数：11789036 错误字数：16585454
 	
 	10、Jcseg 复杂模式：
-	分词速度：567.1382 字符/毫秒
-	行数完美率：46.82%  行数错误率：53.17%  总的行数：2533700  完美行数：1186327  错误行数：1347373
-	字数完美率：38.14% 字数错误率：61.85% 总的字数：28374455 完美字数：10823702 错误字数：17550753
+	分词速度：394.75354 字符/毫秒
+	行数完美率：47.96%  行数错误率：52.03%  总的行数：2533709  完美行数：1215171  错误行数：1318538
+	字数完美率：38.84% 字数错误率：61.15% 总的字数：28374490 完美字数：11021588 错误字数：17352902
 	
 	11、word分词 双向最小匹配算法：
 	分词速度：464.64523 字符/毫秒
@@ -154,9 +132,9 @@
 	字数完美率：36.73% 字数错误率：63.26% 总的字数：28374490 完美字数：10422209 错误字数：17952281
 	
 	14、Jcseg 简易模式：
-	分词速度：1149.2301 字符/毫秒
-	行数完美率：45.14%  行数错误率：54.85%  总的行数：2533700  完美行数：1143760  错误行数：1389940
-	字数完美率：36.38% 字数错误率：63.61% 总的字数：28374455 完美字数：10325294 错误字数：18049161
+	分词速度：944.65125 字符/毫秒
+	行数完美率：44.59%  行数错误率：55.4%  总的行数：2533709  完美行数：1130000  错误行数：1403709
+	字数完美率：35.78% 字数错误率：64.21% 总的字数：28374490 完美字数：10155059 错误字数：18219431
 	
 	15、word分词 逆向最小匹配算法：
 	分词速度：1283.449 字符/毫秒
@@ -204,6 +182,7 @@
 	字数完美率：10.93% 字数错误率：89.06% 总的字数：28374416 完美字数：3103178 错误字数：25271238
 
 	重点说明：
+			关于分词速度，这个不是绝对的，每次测试都会有些差距，而完美率是固定的，所以按行数完美类排名
 			上面的评估报告中没有包括Stanford分词器和Paoding分词器
 			当前代码已经移除了Paoding分词器，因为Paoding分词器已经7年没有维护了
 			当前代码升级Stanford分词器到3.5.2，速度慢的无法等待评估完成，仅用于交互式效果对比
@@ -270,3 +249,27 @@
 	IKAnalyzer分词器 的分词结果：
 		1 、【智能切分】	我 爱 楚 离 陌 
 		2 、【细粒度切分】	我 爱 楚 离 陌 
+   
+	
+	
+### 支持的分词器有：
+
+
+    
+   [1、word分词器](https://github.com/ysc/word)
+    
+   [2、ansj分词器](https://github.com/ansjsun/ansj_seg)
+    
+   [3、mmseg4j分词器](http://code.google.com/p/mmseg4j/)
+   
+   [4、ik-analyzer分词器](http://code.google.com/p/ik-analyzer/)
+   
+   [5、jcseg分词器](https://code.google.com/p/jcseg/)
+   
+   [6、fudannlp分词器](https://code.google.com/p/fudannlp/)
+   
+   [7、smartcn分词器](http://lucene.apache.org/core/5_1_0/analyzers-smartcn/org/apache/lucene/analysis/cn/smart/SmartChineseAnalyzer.html)
+   
+   [8、jieba分词器](https://github.com/huaban/jieba-analysis)
+   
+   [9、stanford分词器](http://nlp.stanford.edu/software/segmenter.shtml)
