@@ -235,7 +235,7 @@
         <dependency>
             <groupId>jcseg</groupId>
             <artifactId>jcseg-core</artifactId>
-            <version>1.9.2</version>
+            <version>1.9.5</version>
         </dependency>
         <!-- mmseg4j分词器 -->
         <dependency>
