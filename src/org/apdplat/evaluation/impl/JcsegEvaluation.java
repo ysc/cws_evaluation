@@ -39,6 +39,7 @@ import org.lionsoul.jcseg.core.SegmentFactory;
  * @author 杨尚川
  */
 public class JcsegEvaluation extends Evaluation implements WordSegmenter{
+    private static final JcsegTaskConfig CONFIG = new JcsegTaskConfig();
     private static final ADictionary DIC = DictionaryFactory.createDefaultDictionary(new JcsegTaskConfig());
     
     @Override
