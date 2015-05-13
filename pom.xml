@@ -161,6 +161,7 @@
         <jieba.version>1.0.0</jieba.version>
         <mmseg4j.version>1.10.0</mmseg4j.version>
         <smartcn.version>5.1.0</smartcn.version>
+        <hanlp.version>portable-1.1.5</hanlp.version>
     </properties>
 
     <dependencies>
@@ -260,6 +261,12 @@
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
             <version>${smartcn.version}</version>
+        </dependency>
+        <!-- HanLP分词器 -->
+        <dependency>
+            <groupId>com.hankcs</groupId>
+            <artifactId>hanlp</artifactId>
+            <version>${hanlp.version}</version>
         </dependency>
     </dependencies>
 </project>
