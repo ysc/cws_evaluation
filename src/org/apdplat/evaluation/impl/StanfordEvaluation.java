@@ -98,6 +98,6 @@ public class StanfordEvaluation extends Evaluation implements WordSegmenter{
         return result.toString();
     }
     public static void main(String[] args) throws Exception{
-        new StanfordEvaluation33333().run();
+        new StanfordEvaluation().run();
     }
 }
