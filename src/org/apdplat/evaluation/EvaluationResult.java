@@ -120,6 +120,12 @@ public class EvaluationResult implements Comparable{
     }
     @Override
     public String toString(){
+        if(perfectCharCount==0){
+            //只评估速度
+            return analyzer+"："
+                    +"\n"
+                    +"分词速度："+segSpeed+" 字符/毫秒";
+        }
         return analyzer+"："
                 +"\n"
                 +"分词速度："+segSpeed+" 字符/毫秒"
