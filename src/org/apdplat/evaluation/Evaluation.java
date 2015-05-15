@@ -20,6 +20,8 @@
 
 package org.apdplat.evaluation;
 
+import edu.stanford.nlp.io.NullOutputStream;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -40,10 +42,18 @@ import java.util.List;
  * @author 杨尚川
  */
 public abstract class Evaluation {
-    protected final String testText = "data/test-text.txt";
-    protected final String standardText = "data/standard-text.txt";
+    protected String testText = "data/test-text.txt";
+    protected String standardText = "data/standard-text.txt";
     public abstract List<EvaluationResult> run() throws Exception;
-    
+
+    public void setTestText(String testText) {
+        this.testText = testText;
+    }
+
+    public void setStandardText(String standardText) {
+        this.standardText = standardText;
+    }
+
     /**
      * 生成评估报告
      * @param list
@@ -59,21 +69,33 @@ public abstract class Evaluation {
      * @throws IOException 
      */
     public static void generateReport(List<EvaluationResult> list, String reportName) throws IOException{
-        Collections.sort(list);
-        List<String> result = new ArrayList<>();
-        int i=1;
-        for(EvaluationResult item : list){
-            result.add("");
-            result.add((i++)+"、"+item.toString());
-        }
-        for(String item : result){
-            System.out.println(item);
-        }
         Path report = Paths.get("report/"+reportName);
         if(Files.notExists(report.getParent())){
             report.getParent().toFile().mkdir();
         }
+        List<String> result = new ArrayList<>();
+        result.add("按行数完美率排序：");
+        result.add("\n");
+        Collections.sort(list);
+        result.addAll(toText(list));
+        result.add("\n");
+        result.add("按分词速度排序：");
+        result.add("\n");
+        Collections.sort(list, (a, b)->new Float(b.getSegSpeed()).compareTo(a.getSegSpeed()));
+        result.addAll(toText(list));
         Files.write(report, result, Charset.forName("utf-8"));
+    }
+    private static List<String> toText(List<EvaluationResult> list){
+        List<String> result = new ArrayList<>();
+        int i=1;
+        for(EvaluationResult item : list){
+            result.add("");
+            result.add("\t"+(i++)+"、"+item.toString());
+        }
+        for(String item : result){
+            System.out.println(item);
+        }
+        return result;
     }
     /**
      * 分词效果评估
@@ -83,6 +105,10 @@ public abstract class Evaluation {
      * @throws java.lang.Exception
      */
     protected EvaluationResult evaluate(String resultText, String standardText) throws Exception {
+        if(standardText==null){
+            System.out.println("没有指定标准文本，仅评估分词速度，不对分词效果进行评估");
+            return new EvaluationResult();
+        }
         int perfectLineCount=0;
         int wrongLineCount=0;
         int perfectCharCount=0;
@@ -133,7 +159,7 @@ public abstract class Evaluation {
         }
         float rate = 0;
         try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(input),"utf-8"));
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(output),"utf-8"))){
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(standardText==null?new NullOutputStream():new FileOutputStream(output),"utf-8"))){
             long size = Files.size(Paths.get(input));
             System.out.println("size:"+size);
             System.out.println("文件大小："+(float)size/1024/1024+" MB");
