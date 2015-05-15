@@ -75,7 +75,7 @@ public class Evaluator {
                 eval.setTestText(testText);
                 eval.setStandardText(standardText);
             }
-            System.out.println("先预热，再评估："+((WordSegmenter)eval).seg("今天下雨，中华人民共和国，预热"));
+            System.out.println("先预热，再评估："+((WordSegmenter)eval).seg("今天下雨，中华人民共和国，结合成分子"));
             list.addAll(eval.run());
         }
         Evaluation.generateReport(list);
