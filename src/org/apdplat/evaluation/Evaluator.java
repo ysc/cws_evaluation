@@ -34,11 +34,24 @@ import java.util.jar.JarFile;
 public class Evaluator {
     public static void main(String[] args) throws Exception{
         long start = System.currentTimeMillis();
+        String testText = null;
+        String standardText = null;
         //可通过命令行参数指定不评估的分词器
         Set<String> excludes = new HashSet<>();
-        for(String exclude : args){
-            excludes.add(exclude);
-            System.out.println("不评估：" + exclude);
+        for(String arg : args){
+            if(arg.endsWith(".jar")){
+                continue;
+            }
+            if(arg.startsWith("-testText=")){
+                testText=arg.replace("-testText=", "").trim();
+                continue;
+            }
+            if(arg.startsWith("-standardText=")){
+                testText=arg.replace("-standardText=", "").trim();
+                continue;
+            }
+            excludes.add(arg);
+            System.out.println("不评估：" + arg);
         }
         List<Class> classes = new ArrayList<>();
         if(args.length>0 && new File(args[0]).exists()){
@@ -55,6 +68,10 @@ public class Evaluator {
         List<EvaluationResult> list = new ArrayList<>();
         for(Class clazz : classes){
             Evaluation eval = (Evaluation)clazz.newInstance();
+            if(testText!=null) {
+                eval.setTestText(testText);
+                eval.setStandardText(standardText);
+            }
             list.addAll(eval.run());
         }
         Evaluation.generateReport(list);
