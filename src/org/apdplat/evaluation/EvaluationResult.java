@@ -124,19 +124,19 @@ public class EvaluationResult implements Comparable{
             //只评估速度
             return analyzer+"："
                     +"\n"
-                    +"分词速度："+segSpeed+" 字符/毫秒";
+                    +"\t分词速度："+segSpeed+" 字符/毫秒";
         }
         return analyzer+"："
                 +"\n"
-                +"分词速度："+segSpeed+" 字符/毫秒"
+                +"\t分词速度："+segSpeed+" 字符/毫秒"
                 +"\n"
-                +"行数完美率："+getLinePerfectRate()+"%"
+                +"\t行数完美率："+getLinePerfectRate()+"%"
                 +"  行数错误率："+getLineWrongRate()+"%"
                 +"  总的行数："+totalLineCount
                 +"  完美行数："+perfectLineCount
                 +"  错误行数："+wrongLineCount
                 +"\n"
-                +"字数完美率："+getCharPerfectRate()+"%"
+                +"\t字数完美率："+getCharPerfectRate()+"%"
                 +" 字数错误率："+getCharWrongRate()+"%"
                 +" 总的字数："+totalCharCount
                 +" 完美字数："+perfectCharCount
