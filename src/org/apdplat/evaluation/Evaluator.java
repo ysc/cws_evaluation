@@ -39,15 +39,18 @@ public class Evaluator {
         //可通过命令行参数指定不评估的分词器
         Set<String> excludes = new HashSet<>();
         for(String arg : args){
+            System.out.println("命令行参数："+arg);
             if(arg.endsWith(".jar")){
                 continue;
             }
             if(arg.startsWith("-testText=")){
                 testText=arg.replace("-testText=", "").trim();
+                System.out.println("testText："+testText);
                 continue;
             }
             if(arg.startsWith("-standardText=")){
-                testText=arg.replace("-standardText=", "").trim();
+                standardText=arg.replace("-standardText=", "").trim();
+                System.out.println("standardText："+standardText);
                 continue;
             }
             excludes.add(arg);
