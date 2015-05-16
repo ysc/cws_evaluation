@@ -113,22 +113,27 @@ public interface WordSegmenter {
                 if(line.trim().equals("")){
                     continue;
                 }
-                System.out.println("********************************************");
-                show(contrast(line));
-                System.out.println("********************************************");
-                showMore(contrastMore(line));
-                System.out.println("********************************************");
+                process(line);
                 showUsage();
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
+    public static void process(String text){
+        System.out.println("********************************************");
+        show(contrast(text));
+        System.out.println("********************************************");
+        showMore(contrastMore(text));
+        System.out.println("********************************************");
+    }
     public static void showUsage(){
         System.out.println("输入exit退出程序");
         System.out.println("输入要分词的文本后回车确认：");
     }
     public static void main(String[] args) {
+        process("我爱楚离陌");
+        process("结合成分子");
         String encoding = "utf-8";
         if(args==null || args.length == 0){
             showUsage();
