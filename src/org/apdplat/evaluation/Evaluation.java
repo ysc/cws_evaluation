@@ -69,18 +69,20 @@ public abstract class Evaluation {
      * @throws IOException 
      */
     public static void generateReport(List<EvaluationResult> list, String reportName) throws IOException{
+        if(list == null || list.isEmpty()){
+            return;
+        }
         Path report = Paths.get("report/"+reportName);
         if(Files.notExists(report.getParent())){
             report.getParent().toFile().mkdir();
         }
         List<String> result = new ArrayList<>();
-        result.add("按行数完美率排序：");
-        result.add("\n");
-        Collections.sort(list);
-        result.addAll(toText(list));
-        result.add("\n");
+        if(list.get(0).getPerfectLineCount() > 0) {
+            result.add("按行数完美率排序：");
+            Collections.sort(list);
+            result.addAll(toText(list));
+        }
         result.add("按分词速度排序：");
-        result.add("\n");
         Collections.sort(list, (a, b)->new Float(b.getSegSpeed()).compareTo(a.getSegSpeed()));
         result.addAll(toText(list));
         Files.write(report, result, Charset.forName("utf-8"));
