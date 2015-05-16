@@ -18,3 +18,4 @@ rem JcsegEvaluation
 rem IKAnalyzerEvaluation
 rem FudanNLPEvaluation
 rem AnsjEvaluation
+rem HanLPEvaluation

@@ -18,3 +18,4 @@ mvn clean install exec:java -Dexec.mainClass="org.apdplat.evaluation.Evaluator" 
 #IKAnalyzerEvaluation
 #FudanNLPEvaluation
 #AnsjEvaluation
+#HanLPEvaluation
