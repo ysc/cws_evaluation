@@ -92,7 +92,7 @@ public abstract class Evaluation {
         int i=1;
         for(EvaluationResult item : list){
             result.add("");
-            result.add("\t"+(i++)+"、"+item.toString());
+            result.add("    "+(i++)+"、"+item.toString());
         }
         for(String item : result){
             System.out.println(item);
