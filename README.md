@@ -1,5 +1,7 @@
 ## 中文分词器分词效果评估对比
 
+### [捐赠致谢](https://github.com/ysc/QuestionAnsweringSystem/wiki/donation)
+
 ### 使用说明：
 
    如何建立开发环境？
