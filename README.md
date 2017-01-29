@@ -456,3 +456,5 @@
    [9、stanford分词器](http://nlp.stanford.edu/software/segmenter.shtml)
    
    [10、hanlp分词器](https://github.com/hankcs/HanLP)
+
+[https://travis-ci.org/ysc/cws_evaluation](https://travis-ci.org/ysc/cws_evaluation)
